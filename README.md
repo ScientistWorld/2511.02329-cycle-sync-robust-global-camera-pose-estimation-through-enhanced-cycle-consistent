@@ -118,7 +118,7 @@ Synthetic camera locations are sampled from `N(0, I_3)`. The viewing graph is Er
 
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: core_claim**
 
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `core_claim`.
