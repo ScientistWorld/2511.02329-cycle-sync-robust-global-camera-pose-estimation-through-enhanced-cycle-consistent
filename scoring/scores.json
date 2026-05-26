@@ -1,0 +1,44 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.4474740404133438,
+          "mean_num_edges": 2463.8,
+          "median_location_error": 0.16377900797808487,
+          "num_trials": 10.0,
+          "std_median_location_error": 0.02742479013438875
+        },
+        "welsch_irls": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.4474740404133438,
+          "mean_num_edges": 2463.8,
+          "median_location_error": 0.2464936934439567,
+          "num_trials": 10.0,
+          "std_median_location_error": 0.03898914208317735
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.6978464142352662,
+          "mean_num_edges": 2463.8,
+          "median_location_error": 0.20466116861061204,
+          "num_trials": 10.0,
+          "std_median_location_error": 0.01459432047544525
+        },
+        "welsch_irls": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.6978464142352662,
+          "mean_num_edges": 2463.8,
+          "median_location_error": 0.3630301604914492,
+          "num_trials": 10.0,
+          "std_median_location_error": 0.033740799852242535
+        }
+      }
+    }
+  }
+}
