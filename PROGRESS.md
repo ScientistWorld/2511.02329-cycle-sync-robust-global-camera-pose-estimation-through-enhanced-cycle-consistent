@@ -2,36 +2,25 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+Implemented a runnable Cycle-Sync synthetic benchmark:
+- `method/cycle_sync.py` implements Algorithm 1's weighted least-squares location updates, cycle inconsistency aggregation, Welsch-style weights, and `lambda_t = t/(t+10)` schedule.
+- `baseline/run_irls.py` runs the residual-only Welsch IRLS comparator corresponding to `lambda_t = 0`.
+- `eval/evaluate_outputs.py` evaluates saved artifacts without importing `method/`.
+- `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
 
 ## Results
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+No reproduced numerical results yet. Static validation passes, but the method has not run in the container because NumPy/SciPy are installed by `environment/setup.sh` during the job.
 
 ## Remaining
 
-<!-- What still needs to be done to reach higher milestones. -->
+Run the CPU test job, inspect `scoring/scores.json`, and compare against the Supplement Table 14/15 references with `python validate.py --compare`. If the method runs and shows the expected improvement over residual-only IRLS, update the milestone to at least `core_claim`.
 
 ## Issues
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+The login-node Python environment lacks NumPy/SciPy, so only syntax compilation and static validator checks were run locally. Actual numerical execution is delegated to the compute container.
 
 ## Deviations from Paper
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+- Evaluation alignment uses closed-form L2 similarity alignment rather than the paper's L1 alignment objective. The metric remains median per-camera Euclidean translation error after global translation and scale alignment; this choice keeps evaluation deterministic and lightweight.
+- The T-AAB initializer is implemented with the standard triangle coplanarity residual over well-shaped cycles. The paper cites AAB's closed-form geodesic residual; this reproduction preserves the truncated cycle-consistency initialization and subsequent Cycle-Sync computation but may not exactly match the initializer's closed-form constants.

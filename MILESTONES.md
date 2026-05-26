@@ -15,7 +15,11 @@
 
 ## Progress Log
 
-<!-- Write your progress here -->
+### [2026-05-26 23:40] - none
+- Read the paper and identified Cycle-Sync's core location-estimation algorithm and synthetic evaluation protocol.
+- Implemented the paper's Welsch-weighted WLS loop with cycle-consistency message passing, plus a residual-only Welsch IRLS comparator.
+- Added synthetic data generation, artifact-based evaluation, scoring reference targets, scripts, and packaging dependencies.
+- Static validation passes; compute job is needed before claiming `method_runs`.
 
 ## Stop Justification
-- Completed at milestone `none`.
+- Not stopped. A CPU test job is being submitted to execute the reproduction and produce scores.

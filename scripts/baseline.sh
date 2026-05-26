@@ -17,4 +17,5 @@ set -e
 
 cd /home/user
 
-# TODO: run baseline
+python baseline/run_irls.py "$@"
+bash scripts/evaluate.sh

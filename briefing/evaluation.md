@@ -4,12 +4,14 @@ How success is measured. Describe only the metrics, targets, and evaluation proc
 
 ## Metrics
 
-<!-- What metrics are used? How are they computed? What does higher/lower mean? -->
+The primary metric is median camera-location error. Estimated locations are aligned to ground truth by a global translation and scalar scale, then Euclidean error is computed per camera and the median over cameras is reported. Lower is better.
+
+The evaluation also reports the realized corruption fraction, number of graph edges, number of trials, and exact-recovery rate. Exact recovery means median location error below `1e-4`, following the paper.
 
 ## Baselines and Targets
 
-<!-- What performance levels exist as reference points? Include the paper's reported numbers as targets, and any standard baselines. A scientist agent should know what "good" looks like. -->
+The reference target for the proposed method is the paper's Supplement Table 14 and Table 15 synthetic annealing ablation: median error `0.24` for uniform corruption with `q=0.7`, `sigma=0.2`, and median error `0.17` for adversarial cycle-consistent corruption with `q=0.45`, `sigma=0.2`. The residual-only Welsch IRLS baseline from the same tables reports `0.36` and `0.32`, respectively.
 
 ## Evaluation Protocol
 
-<!-- How should evaluation be run? What data split, what conditions? Any important details about how to compare fairly (e.g., fixed seeds, specific test sets, averaging over runs). -->
+Synthetic camera locations are sampled from `N(0, I_3)`. The viewing graph is Erdos-Renyi with edge probability `p=0.5`. The standard reproduction uses `n=100` cameras and 10 independent trials. Uniform corruption replaces a corrupted direction with a random Gaussian unit vector; adversarial corruption replaces it with a direction generated from an alternative camera cloud. Evaluation reads saved method artifacts in `outputs/` and writes `scoring/scores.json`.

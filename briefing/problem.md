@@ -6,12 +6,12 @@ Do NOT describe the paper's method or solution here — only the problem itself.
 
 ## Research Question
 
-<!-- What problem or challenge does this paper tackle? What gap in existing work does it address? -->
+Estimate absolute 3D camera locations from a graph of noisy, outlier-corrupted pairwise unit direction measurements. The estimates are only identifiable up to global translation and scale, so a solution must recover the relative camera configuration despite missing distances, graph sparsity, noise, and severe direction corruption.
 
 ## Why It Matters
 
-<!-- Why is this problem important? What would a good solution enable? Make it short -->
+Camera poses are a core input to structure-from-motion, 3D reconstruction, robotics, AR/VR, neural rendering, and Gaussian splatting. A robust global location estimator reduces reliance on incremental pipelines and bundle adjustment when pairwise image matches contain many outliers.
 
 ## Success Criteria
 
-<!-- What would a successful solution look like? What properties should it have? This is about the goal, not the paper's specific approach. Make it short -->
+A successful solution returns camera locations with low median aligned translation error, remains stable under high corruption rates, and does not collapse to trivial all-zero or near-collinear configurations. It should outperform a residual-only robust least-squares baseline at the same graph size, corruption model, noise level, and number of trials.

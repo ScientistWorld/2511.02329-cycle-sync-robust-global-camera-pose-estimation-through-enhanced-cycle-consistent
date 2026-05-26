@@ -1,0 +1,58 @@
+{
+  "experiments": {
+    "uniform_high_noise": {
+      "description": "Synthetic Erdos-Renyi camera-location recovery under uniform random direction corruption with q=0.7 and sigma=0.2, matching Supplement Table 14.",
+      "weight": 0.5,
+      "primary_metric": "median_location_error",
+      "metrics": {
+        "median_location_error": {
+          "higher_is_better": false,
+          "coefficient": -1.0
+        },
+        "mean_corruption_fraction": {
+          "higher_is_better": true,
+          "coefficient": 0.2
+        }
+      },
+      "results": {
+        "cycle_sync": {
+          "type": "proposed",
+          "median_location_error": 0.24,
+          "mean_corruption_fraction": 0.7
+        },
+        "welsch_irls": {
+          "type": "baseline",
+          "median_location_error": 0.36,
+          "mean_corruption_fraction": 0.7
+        }
+      }
+    },
+    "adversarial_high_noise": {
+      "description": "Synthetic Erdos-Renyi camera-location recovery under cycle-consistent adversarial direction corruption with q=0.45 and sigma=0.2, matching Supplement Table 15.",
+      "weight": 0.5,
+      "primary_metric": "median_location_error",
+      "metrics": {
+        "median_location_error": {
+          "higher_is_better": false,
+          "coefficient": -1.0
+        },
+        "mean_corruption_fraction": {
+          "higher_is_better": true,
+          "coefficient": 0.2
+        }
+      },
+      "results": {
+        "cycle_sync": {
+          "type": "proposed",
+          "median_location_error": 0.17,
+          "mean_corruption_fraction": 0.45
+        },
+        "welsch_irls": {
+          "type": "baseline",
+          "median_location_error": 0.32,
+          "mean_corruption_fraction": 0.45
+        }
+      }
+    }
+  }
+}
