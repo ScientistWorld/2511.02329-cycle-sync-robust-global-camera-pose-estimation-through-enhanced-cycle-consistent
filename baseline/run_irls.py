@@ -18,7 +18,6 @@ from method.cycle_sync import residual_irls
 EXPERIMENTS = {
     "uniform_high_noise": {"corruption": "uniform", "q": 0.7, "sigma": 0.2},
     "adversarial_high_noise": {"corruption": "adversarial", "q": 0.45, "sigma": 0.2},
-    "uniform_exact_recovery": {"corruption": "uniform", "q": 0.7, "sigma": 0.0},
 }
 
 

@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "Run expanded CPU reproduction with the new noiseless exact-recovery target, then validate scores against the updated reference contract."
+notes: "Rerun CPU reproduction after removing the unsupported exact-recovery target and keeping the paper-aligned L1 evaluator."

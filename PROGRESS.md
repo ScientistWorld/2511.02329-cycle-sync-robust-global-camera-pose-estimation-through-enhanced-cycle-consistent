@@ -23,7 +23,7 @@ These results support the core claim numerically. The scorer contract is now ver
 
 ## Remaining
 
-An expanded CPU job is queued to add the paper's noiseless uniform-corruption exact-recovery claim as `uniform_exact_recovery`. If it passes, the synthetic package will cover both noisy robustness and exact-recovery behavior.
+An attempted expansion to the paper's noiseless uniform-corruption exact-recovery claim did not pass: with the current approximate T-AAB initializer, `uniform_exact_recovery` produced `0.1005` median error and `0.0` exact-recovery rate. That unsupported target was removed from the score contract rather than claimed.
 
 To reach still higher milestones, implement the full real-image SfM pipeline: MPLS-cycle sample generation, STE direction estimation, and ETH3D/IMC style experiments. The current environment focuses on the paper's synthetic location-estimation experiments.
 
@@ -32,6 +32,8 @@ To reach still higher milestones, implement the full real-image SfM pipeline: MP
 The login-node Python environment lacks NumPy/SciPy, so numerical execution is delegated to the compute container. The first job failure was a scoring schema mismatch, not a method runtime failure; the second job passed after diagnostics were separated from `scores.json`.
 
 The continuation audit flagged that the original evaluator used an L2 similarity alignment. This has been replaced with an IRLS/Weiszfeld implementation of the paper's L1 translation-scale alignment before the expanded job.
+
+Job `68267221-a05` completed the expanded computation but failed validation because the unsupported exact-recovery experiment emitted a baseline method not present in `reference.json`. The evaluator now skips undeclared experiments when a reference contract is supplied, and the unsupported exact-recovery target has been removed.
 
 ## Deviations from Paper
 

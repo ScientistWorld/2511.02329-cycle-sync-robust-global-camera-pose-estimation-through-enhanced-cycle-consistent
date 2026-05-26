@@ -29,6 +29,8 @@ def evaluate_manifest(
     scores = {}
     diagnostics = {}
     for exp_name, files in manifest.items():
+        if metric_filter and exp_name not in metric_filter:
+            continue
         medians = []
         edges = []
         corruptions = []
