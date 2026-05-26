@@ -38,4 +38,4 @@
 - The reproduction supports the paper's core robustness claim on both high-noise uniform corruption and high-noise cycle-consistent adversarial corruption.
 
 ## Stop Justification
-- Finished at `core_claim_plus`. The actual Cycle-Sync algorithm runs end-to-end, scores are validated in-container, and two synthetic settings reproduce the central robustness claim. Higher milestones would require implementing the full real-image SfM pipeline with MPLS-cycle, STE direction estimation, and ETH3D/IMC experiments.
+- Completed at milestone `core_claim_plus`.

@@ -1,0 +1,130 @@
+{
+  "paper": {
+    "arxiv_id": "2511.02329",
+    "title": "Cycle-Sync: Robust Global Camera Pose Estimation through Enhanced Cycle-Consistent Synchronization",
+    "date": null,
+    "topics": null
+  },
+  "reproduction": {
+    "milestone": "core_claim_plus",
+    "status": "done",
+    "error": null,
+    "scaffold": "codex",
+    "model": "gpt-5.5",
+    "profile": "gpt-5.5-medium",
+    "effort": "medium",
+    "gpu_hours_used": 0.0,
+    "current_iteration_gpu_budget": 30,
+    "current_iteration_gpu_hours_used": 0.0,
+    "total_gpu_hours_used": 0.0,
+    "current_iteration_cpu_hours_used": 0.129,
+    "total_cpu_hours_used": 0.129,
+    "gpu_budget": 30,
+    "duration_sec": 1182.5,
+    "cost_usd": null,
+    "input_tokens": 3677754,
+    "output_tokens": 28607,
+    "cached_input_tokens": 3448832,
+    "cache_creation_tokens": null,
+    "reasoning_tokens": 0,
+    "total_input_tokens": 3677754,
+    "num_turns": 62,
+    "duration_api_ms": null,
+    "num_runs": 1,
+    "iteration_count": 0,
+    "workflow": "standard",
+    "workflow_step": 0,
+    "total_gpu_jobs": 2,
+    "time_breakdown": {
+      "working": 560.6267638206482,
+      "building": 0.08864569664001465,
+      "installing": 16.662206172943115,
+      "waiting": 473.1291356086731
+    }
+  },
+  "agents": [
+    {
+      "scaffold": "codex",
+      "model": "gpt-5.5",
+      "profile": "gpt-5.5-medium",
+      "effort": "medium",
+      "role": "reproducer",
+      "is_iteration": false,
+      "iteration": 1,
+      "workflow": "standard",
+      "workflow_step": 0,
+      "started_at": 1779837197.2096057,
+      "finished_at": 1779838379.7595754,
+      "duration_sec": 1182.5,
+      "blocked_sec": 0.0,
+      "status": "done",
+      "error": null,
+      "milestone": "core_claim_plus",
+      "gpu_budget": 30,
+      "gpu_hours_used": 0.0,
+      "total_gpu_hours_used": 0.0,
+      "cpu_hours_used": 0.129,
+      "time_breakdown": {
+        "working": 560.6267638206482,
+        "building": 0.08864569664001465,
+        "installing": 16.662206172943115,
+        "waiting": 473.1291356086731
+      },
+      "cost_usd": null,
+      "input_tokens": 3677754,
+      "output_tokens": 28607,
+      "cached_input_tokens": 3448832,
+      "cache_creation_tokens": null,
+      "reasoning_tokens": 0,
+      "total_input_tokens": 3677754,
+      "num_turns": 62,
+      "duration_api_ms": null,
+      "tool_uses": {
+        "shell": 48,
+        "file_edit": 14
+      },
+      "gpu_jobs": [
+        {
+          "run_id": "7286eaf5-a28",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu-test",
+          "hive_job_id": "b58e0068",
+          "status": "failed",
+          "returncode": 1,
+          "duration_sec": 423.4,
+          "submitted_at": 1779837647.3911772,
+          "started_at": 1779837649.577332,
+          "completed_at": 1779838072.996449
+        },
+        {
+          "run_id": "b411c5f8-115",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu-test",
+          "hive_job_id": "be346942",
+          "status": "completed",
+          "returncode": 0,
+          "duration_sec": 42.5,
+          "submitted_at": 1779838209.0666552,
+          "started_at": 1779838210.8340552,
+          "completed_at": 1779838253.320817
+        }
+      ],
+      "progress_log": "### [2026-05-26 23:40] - none\n- Read the paper and identified Cycle-Sync's core location-estimation algorithm and synthetic evaluation protocol.\n- Implemented the paper's Welsch-weighted WLS loop with cycle-consistency message passing, plus a residual-only Welsch IRLS comparator.\n- Added synthetic data generation, artifact-based evaluation, scoring reference targets, scripts, and packaging dependencies.\n- Static validation passes; compute job is needed before claiming `method_runs`.\n\n### [2026-05-27 00:00] - method_runs\n- CPU test job executed Cycle-Sync and residual-only Welsch IRLS on both synthetic benchmark settings and produced output artifacts.\n- Cycle-Sync improved over the residual-only baseline in both settings and matched the scale of the paper's Supplement Table 14/15 numbers.\n- Job failed only at final validation because diagnostics were written into `scoring/scores.json`; evaluator has been patched to keep diagnostics separate.\n\n### [2026-05-27 00:12] - core_claim\n- Regenerated schema-valid `scoring/scores.json` from job artifacts.\n- `uniform_high_noise`: Cycle-Sync median error `0.2047` versus residual-only Welsch IRLS `0.3630`, matching the paper's reported scale (`0.24` versus `0.36`).\n- `adversarial_high_noise`: Cycle-Sync median error `0.1638` versus residual-only Welsch IRLS `0.2465`, matching the paper's reported scale (`0.17` versus `0.32`).\n- `python validate.py --compare` passes locally on the generated scores; a CPU validation job is being submitted to verify the patched evaluator in-container.\n\n### [2026-05-27 00:30] - core_claim_plus\n- CPU validation job `b411c5f8-115` completed with exit code 0.\n- In-container `python validate.py --compare` passed with schema-valid scores and all structural checks.\n- The reproduction supports the paper's core robustness claim on both high-noise uniform corruption and high-noise cycle-consistent adversarial corruption."
+    }
+  ],
+  "components": {
+    "has_container": true,
+    "has_method_code": true,
+    "has_evaluation": true,
+    "has_download_script": true,
+    "has_reproduce_script": true,
+    "has_method_script": true,
+    "has_baseline": true,
+    "has_reference": true,
+    "has_data": true
+  }
+}
