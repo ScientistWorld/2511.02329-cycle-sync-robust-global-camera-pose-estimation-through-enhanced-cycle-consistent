@@ -23,13 +23,16 @@ These results support the core claim numerically. The scorer contract is now ver
 
 ## Remaining
 
-To reach higher milestones, implement the full real-image SfM pipeline: MPLS-cycle sample generation, STE direction estimation, and ETH3D/IMC style experiments. The current environment focuses on the paper's synthetic location-estimation experiments.
+An expanded CPU job is queued to add the paper's noiseless uniform-corruption exact-recovery claim as `uniform_exact_recovery`. If it passes, the synthetic package will cover both noisy robustness and exact-recovery behavior.
+
+To reach still higher milestones, implement the full real-image SfM pipeline: MPLS-cycle sample generation, STE direction estimation, and ETH3D/IMC style experiments. The current environment focuses on the paper's synthetic location-estimation experiments.
 
 ## Issues
 
 The login-node Python environment lacks NumPy/SciPy, so numerical execution is delegated to the compute container. The first job failure was a scoring schema mismatch, not a method runtime failure; the second job passed after diagnostics were separated from `scores.json`.
 
+The continuation audit flagged that the original evaluator used an L2 similarity alignment. This has been replaced with an IRLS/Weiszfeld implementation of the paper's L1 translation-scale alignment before the expanded job.
+
 ## Deviations from Paper
 
-- Evaluation alignment uses closed-form L2 similarity alignment rather than the paper's L1 alignment objective. The metric remains median per-camera Euclidean translation error after global translation and scale alignment; this choice keeps evaluation deterministic and lightweight.
 - The T-AAB initializer is implemented with the standard triangle coplanarity residual over well-shaped cycles. The paper cites AAB's closed-form geodesic residual; this reproduction preserves the truncated cycle-consistency initialization and subsequent Cycle-Sync computation but may not exactly match the initializer's closed-form constants.

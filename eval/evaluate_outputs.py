@@ -11,13 +11,20 @@ import numpy as np
 from metrics import exact_recovery_rate, median_location_error
 
 
-METHOD_NAMES = {
-    "cycle_sync": "cycle_sync",
-    "irls": "welsch_irls",
-}
+def declared_metrics(reference_path: Path) -> dict[str, set[str]]:
+    if not reference_path.exists():
+        return {}
+    reference = json.loads(reference_path.read_text())
+    return {
+        exp_name: set(exp.get("metrics", {}))
+        for exp_name, exp in reference.get("experiments", {}).items()
+    }
 
 
-def evaluate_manifest(manifest_path: Path) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
+def evaluate_manifest(
+    manifest_path: Path,
+    metric_filter: dict[str, set[str]] | None = None,
+) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
     manifest = json.loads(manifest_path.read_text())
     scores = {}
     diagnostics = {}
@@ -30,9 +37,14 @@ def evaluate_manifest(manifest_path: Path) -> tuple[dict[str, dict[str, float]],
                 medians.append(median_location_error(z["locations_true"], z["locations_est"]))
                 edges.append(len(z["edges"]))
                 corruptions.append(float(np.mean(z["corrupted"])))
-        scores[exp_name] = {
+        all_scores = {
             "median_location_error": float(np.mean(medians)),
             "mean_corruption_fraction": float(np.mean(corruptions)),
+            "exact_recovery_rate": exact_recovery_rate(medians),
+        }
+        allowed = metric_filter.get(exp_name) if metric_filter else None
+        scores[exp_name] = {
+            key: value for key, value in all_scores.items() if allowed is None or key in allowed
         }
         diagnostics[exp_name] = {
             "trial_median_location_errors": [float(x) for x in medians],
@@ -48,20 +60,33 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--cycle-sync", default="outputs/cycle_sync/manifest.json")
     parser.add_argument("--irls", default="outputs/irls/manifest.json")
+    parser.add_argument(
+        "--manifest",
+        action="append",
+        default=[],
+        help="Additional METHOD=manifest.json artifact manifest to evaluate.",
+    )
     parser.add_argument("--out", default="scoring/scores.json")
     parser.add_argument("--diagnostics-out", default="scoring/diagnostics.json")
+    parser.add_argument("--reference", default="scoring/reference.json")
     args = parser.parse_args()
 
     scores = {"experiments": {}}
     diagnostics = {"experiments": {}}
+    metric_filter = declared_metrics(Path(args.reference))
     manifests = {
         "cycle_sync": Path(args.cycle_sync),
         "welsch_irls": Path(args.irls),
     }
+    for item in args.manifest:
+        if "=" not in item:
+            raise SystemExit("--manifest entries must have the form METHOD=path/to/manifest.json")
+        method_name, manifest_name = item.split("=", 1)
+        manifests[method_name] = Path(manifest_name)
     for method_name, manifest_path in manifests.items():
         if not manifest_path.exists():
             continue
-        method_results, method_diagnostics = evaluate_manifest(manifest_path)
+        method_results, method_diagnostics = evaluate_manifest(manifest_path, metric_filter)
         for exp_name, metrics in method_results.items():
             scores["experiments"].setdefault(exp_name, {"results": {}})
             scores["experiments"][exp_name]["results"][method_name] = metrics

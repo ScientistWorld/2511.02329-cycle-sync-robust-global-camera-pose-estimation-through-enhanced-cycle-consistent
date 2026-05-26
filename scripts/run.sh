@@ -13,9 +13,5 @@ set -e
 
 cd /home/user
 
-if [ ! -f outputs/cycle_sync/manifest.json ] || [ ! -f outputs/irls/manifest.json ]; then
-  bash scripts/reproduce.sh
-else
-  bash scripts/evaluate.sh
-fi
+bash scripts/reproduce.sh
 python validate.py --compare
