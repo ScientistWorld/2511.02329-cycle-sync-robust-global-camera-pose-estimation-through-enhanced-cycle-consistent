@@ -4,11 +4,25 @@
       "results": {
         "cycle_sync": {
           "mean_corruption_fraction": 0.4474740404133438,
-          "median_location_error": 0.16377900797808487
+          "median_location_error": 0.13071107358085005
         },
         "welsch_irls": {
           "mean_corruption_fraction": 0.4474740404133438,
-          "median_location_error": 0.2464936934439567
+          "median_location_error": 0.2366036286850262
+        }
+      }
+    },
+    "uniform_exact_recovery": {
+      "results": {
+        "cycle_sync": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.6978464142352662,
+          "median_location_error": 0.10047511490975806
+        },
+        "welsch_irls": {
+          "exact_recovery_rate": 0.0,
+          "mean_corruption_fraction": 0.6978464142352662,
+          "median_location_error": 0.26108550411453474
         }
       }
     },
@@ -16,11 +30,11 @@
       "results": {
         "cycle_sync": {
           "mean_corruption_fraction": 0.6978464142352662,
-          "median_location_error": 0.20466116861061204
+          "median_location_error": 0.20022080133970652
         },
         "welsch_irls": {
           "mean_corruption_fraction": 0.6978464142352662,
-          "median_location_error": 0.3630301604914492
+          "median_location_error": 0.3601903802844941
         }
       }
     }
