@@ -9,6 +9,7 @@ Implemented a runnable Cycle-Sync synthetic benchmark:
 - `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
 - First CPU job completed both synthetic experiments and wrote artifacts for Cycle-Sync and the residual-only baseline.
 - CPU validation job `b411c5f8-115` completed successfully and verified `python validate.py --compare` inside the compute container.
+- The packaged benchmark covers two synthetic settings, so it reaches `core_claim_plus`: high uniform corruption and cycle-consistent adversarial corruption.
 
 ## Results
 
