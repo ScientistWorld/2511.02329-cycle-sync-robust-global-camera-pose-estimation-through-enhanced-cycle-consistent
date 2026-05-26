@@ -7,18 +7,25 @@ Implemented a runnable Cycle-Sync synthetic benchmark:
 - `baseline/run_irls.py` runs the residual-only Welsch IRLS comparator corresponding to `lambda_t = 0`.
 - `eval/evaluate_outputs.py` evaluates saved artifacts without importing `method/`.
 - `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
+- First CPU job completed both synthetic experiments and wrote artifacts for Cycle-Sync and the residual-only baseline.
 
 ## Results
 
-No reproduced numerical results yet. Static validation passes, but the method has not run in the container because NumPy/SciPy are installed by `environment/setup.sh` during the job.
+The first CPU job produced valid method artifacts but failed final validation because `scores.json` contained extra diagnostic fields not declared in `reference.json`.
+
+Observed reproduced numbers from the failed job's generated `scores.json`:
+- `uniform_high_noise`: Cycle-Sync median location error `0.2047`; residual-only Welsch IRLS `0.3630`; paper reference `0.24` and `0.36`.
+- `adversarial_high_noise`: Cycle-Sync median location error `0.1638`; residual-only Welsch IRLS `0.2465`; paper reference `0.17` and `0.32`.
+
+These results support the core claim numerically. The scorer contract has been fixed locally and will be verified in-container with the next CPU job.
 
 ## Remaining
 
-Run the CPU test job, inspect `scoring/scores.json`, and compare against the Supplement Table 14/15 references with `python validate.py --compare`. If the method runs and shows the expected improvement over residual-only IRLS, update the milestone to at least `core_claim`.
+Run a CPU validation job to regenerate `scoring/scores.json` with only the declared metrics and compare against the Supplement Table 14/15 references with `python validate.py --compare`.
 
 ## Issues
 
-The login-node Python environment lacks NumPy/SciPy, so only syntax compilation and static validator checks were run locally. Actual numerical execution is delegated to the compute container.
+The login-node Python environment lacks NumPy/SciPy, so numerical execution is delegated to the compute container. The first job failure was a scoring schema mismatch, not a method runtime failure.
 
 ## Deviations from Paper
 
