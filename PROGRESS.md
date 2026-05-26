@@ -8,6 +8,7 @@ Implemented a runnable Cycle-Sync synthetic benchmark:
 - `eval/evaluate_outputs.py` evaluates saved artifacts without importing `method/`.
 - `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
 - First CPU job completed both synthetic experiments and wrote artifacts for Cycle-Sync and the residual-only baseline.
+- CPU validation job `b411c5f8-115` completed successfully and verified `python validate.py --compare` inside the compute container.
 
 ## Results
 
@@ -17,15 +18,15 @@ Observed reproduced numbers from the failed job's generated `scores.json`:
 - `uniform_high_noise`: Cycle-Sync median location error `0.2047`; residual-only Welsch IRLS `0.3630`; paper reference `0.24` and `0.36`.
 - `adversarial_high_noise`: Cycle-Sync median location error `0.1638`; residual-only Welsch IRLS `0.2465`; paper reference `0.17` and `0.32`.
 
-These results support the core claim numerically. The scorer contract has been fixed locally and will be verified in-container with the next CPU job.
+These results support the core claim numerically. The scorer contract is now verified in-container.
 
 ## Remaining
 
-Run a CPU validation job to regenerate `scoring/scores.json` with only the declared metrics and compare against the Supplement Table 14/15 references with `python validate.py --compare`.
+To reach higher milestones, implement the full real-image SfM pipeline: MPLS-cycle sample generation, STE direction estimation, and ETH3D/IMC style experiments. The current environment focuses on the paper's synthetic location-estimation experiments.
 
 ## Issues
 
-The login-node Python environment lacks NumPy/SciPy, so numerical execution is delegated to the compute container. The first job failure was a scoring schema mismatch, not a method runtime failure.
+The login-node Python environment lacks NumPy/SciPy, so numerical execution is delegated to the compute container. The first job failure was a scoring schema mismatch, not a method runtime failure; the second job passed after diagnostics were separated from `scores.json`.
 
 ## Deviations from Paper
 

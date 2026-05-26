@@ -27,8 +27,8 @@
 #   milestone: core_claim
 #   notes: "Reproduced the core claim. Environment packaged."
 
-action: submit
+action: done
 gpus: 0
 test: true
-milestone: core_claim
-notes: "CPU validation: rerun the patched evaluator on existing Cycle-Sync/IRLS artifacts if present, regenerate schema-valid scores, and run validate.py --compare in-container."
+milestone: core_claim_plus
+notes: "Cycle-Sync synthetic reproduction is complete and validated in-container. Two high-noise synthetic settings reproduce the core robustness claim against residual-only Welsch IRLS."

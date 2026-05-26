@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 <!-- Milestone levels (update "Current" above as you progress):
   none             — just started, no meaningful progress yet
@@ -32,5 +32,10 @@
 - `adversarial_high_noise`: Cycle-Sync median error `0.1638` versus residual-only Welsch IRLS `0.2465`, matching the paper's reported scale (`0.17` versus `0.32`).
 - `python validate.py --compare` passes locally on the generated scores; a CPU validation job is being submitted to verify the patched evaluator in-container.
 
+### [2026-05-27 00:30] - core_claim_plus
+- CPU validation job `b411c5f8-115` completed with exit code 0.
+- In-container `python validate.py --compare` passed with schema-valid scores and all structural checks.
+- The reproduction supports the paper's core robustness claim on both high-noise uniform corruption and high-noise cycle-consistent adversarial corruption.
+
 ## Stop Justification
-- Not stopped. A CPU validation job is being submitted to verify the patched evaluator in-container.
+- Finished at `core_claim_plus`. The actual Cycle-Sync algorithm runs end-to-end, scores are validated in-container, and two synthetic settings reproduce the central robustness claim. Higher milestones would require implementing the full real-image SfM pipeline with MPLS-cycle, STE direction estimation, and ETH3D/IMC experiments.
