@@ -18,6 +18,8 @@ set -e
 
 cd /home/user
 
+rm -rf outputs/cycle_sync outputs/cycle_sync_reverse outputs/cycle_sync_cycle_only outputs/cycle_sync_fast outputs/irls
+
 bash scripts/baseline.sh --n 100 --p 0.5 --trials 10 --t-max 20
 bash scripts/method.sh --n 100 --p 0.5 --trials 10 --t-max 20
 bash scripts/evaluate.sh

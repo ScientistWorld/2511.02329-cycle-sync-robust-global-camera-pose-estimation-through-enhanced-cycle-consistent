@@ -6,11 +6,11 @@ How success is measured. Describe only the metrics, targets, and evaluation proc
 
 The primary metric is median camera-location error. Estimated locations are aligned to ground truth by a global translation and scalar scale, then Euclidean error is computed per camera and the median over cameras is reported. Lower is better.
 
-The evaluation also reports the realized corruption fraction, number of graph edges, number of trials, and exact-recovery rate. Exact recovery means median location error below `1e-4`, following the paper.
+The score file also reports the realized corruption fraction as a constraint metric so improvements cannot come from silently reducing the benchmark difficulty. Diagnostic files record number of graph edges, number of trials, and exact-recovery rate. Exact recovery means median location error below `1e-4`, following the paper.
 
 ## Baselines and Targets
 
-The reference target for the proposed method is the paper's Supplement Table 14 and Table 15 synthetic annealing ablation: median error `0.24` for uniform corruption with `q=0.7`, `sigma=0.2`, and median error `0.17` for adversarial cycle-consistent corruption with `q=0.45`, `sigma=0.2`. The residual-only Welsch IRLS baseline from the same tables reports `0.36` and `0.32`, respectively.
+The reference target for the proposed method is the paper's Supplement Table 14 and Table 15 synthetic annealing ablation: median error `0.24` for uniform corruption with `q=0.7`, `sigma=0.2`, and median error `0.17` for adversarial cycle-consistent corruption with `q=0.45`, `sigma=0.2`. The residual-only Welsch IRLS baseline from the same tables reports `0.36` and `0.32`, respectively. The benchmark also scores the paper's alternate annealing schedules from those tables.
 
 ## Evaluation Protocol
 

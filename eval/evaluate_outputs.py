@@ -79,6 +79,9 @@ def main() -> None:
     manifests = {
         "cycle_sync": Path(args.cycle_sync),
         "welsch_irls": Path(args.irls),
+        "cycle_sync_reverse": Path("outputs/cycle_sync_reverse/manifest.json"),
+        "cycle_sync_cycle_only": Path("outputs/cycle_sync_cycle_only/manifest.json"),
+        "cycle_sync_fast": Path("outputs/cycle_sync_fast/manifest.json"),
     }
     for item in args.manifest:
         if "=" not in item:

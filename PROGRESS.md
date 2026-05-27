@@ -4,6 +4,7 @@
 
 Implemented a runnable Cycle-Sync synthetic benchmark:
 - `method/cycle_sync.py` implements Algorithm 1's weighted least-squares location updates, cycle inconsistency aggregation, Welsch-style weights, and `lambda_t = t/(t+10)` schedule.
+- The T-AAB initializer now uses the AAB-style geodesic distance to the positive-scale feasible cycle arc over well-shaped triangles, rather than only measuring coplanarity.
 - `baseline/run_irls.py` runs the residual-only Welsch IRLS comparator corresponding to `lambda_t = 0`.
 - `eval/evaluate_outputs.py` evaluates saved artifacts without importing `method/`.
 - `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
@@ -19,6 +20,17 @@ Final validated reproduced numbers from job `e5e37f80-b8b`:
 - `adversarial_high_noise`: Cycle-Sync median location error `0.1307`; residual-only Welsch IRLS `0.2366`; paper reference `0.17` and `0.32`.
 
 These results support the core claim numerically. The scorer contract is now verified in-container.
+
+## Current Iteration
+
+Prepared a follow-up reproduction of the paper's full annealing ablation in Supplement Tables 14 and 15:
+- `cycle_sync`: `lambda_t = t/(t+10)`
+- `welsch_irls`: `lambda_t = 0`
+- `cycle_sync_reverse`: `lambda_t = 10/(t+10)`
+- `cycle_sync_cycle_only`: `lambda_t = 1`
+- `cycle_sync_fast`: `lambda_t = t/(t+5)`
+
+The next CPU job will regenerate all outputs from scratch and run `python validate.py --compare`. If it passes and the schedule trends are sensible, this should support `secondary_claims`.
 
 ## Remaining
 
@@ -38,4 +50,5 @@ Job `e5e37f80-b8b` reran the two supported experiments and passed `python valida
 
 ## Deviations from Paper
 
-- The T-AAB initializer is implemented with the standard triangle coplanarity residual over well-shaped cycles. The paper cites AAB's closed-form geodesic residual; this reproduction preserves the truncated cycle-consistency initialization and subsequent Cycle-Sync computation but may not exactly match the initializer's closed-form constants.
+- The WLS subproblem in Algorithm 1 is solved by alternating weighted location updates and closed-form `alpha_ij` projections until convergence, rather than by a monolithic QP solver. This preserves the stated objective and constraints but may not match a direct QP implementation exactly.
+- The current environment focuses on synthetic location-estimation experiments. It does not reproduce the full real-image SfM pipeline with MPLS-cycle rotations, STE direction estimation, or ETH3D/IMC image processing.

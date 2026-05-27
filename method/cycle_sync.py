@@ -61,14 +61,37 @@ def _well_shaped(g1: np.ndarray, g2: np.ndarray, min_sin: float = 0.6) -> bool:
 
 
 def _aab_inconsistency(gij: np.ndarray, gik: np.ndarray, gjk: np.ndarray) -> float:
-    """Coplanarity-based 3-cycle inconsistency used for T-AAB initialization."""
+    """AAB-style geodesic inconsistency for a bearing 3-cycle.
 
-    normal = np.cross(gik, gjk)
-    denom = np.linalg.norm(normal)
-    if denom < 1e-12:
+    For the edge ``ij`` and auxiliary node ``k``, AAB measures the spherical
+    distance from the observed direction ``gamma_ij`` to the set of directions
+    that can close a triangle with positive scales:
+
+        alpha_ij gamma + alpha_jk gamma_jk + alpha_ki gamma_ki = 0.
+
+    With the orientation used here, that feasible set is the great-circle arc
+    between ``gamma_ik`` and ``gamma_kj``. The closest point is the normalized
+    projection onto their span when the projection lies in the positive cone;
+    otherwise it is the nearer endpoint of the arc.
+    """
+
+    a = gik
+    b = -gjk
+    gram = np.array([[1.0, float(np.dot(a, b))], [float(np.dot(a, b)), 1.0]])
+    if abs(np.linalg.det(gram)) < 1e-12:
         return np.nan
-    # A clean camera-location triangle has all three directions in one plane.
-    return float(min(1.0, abs(np.dot(gij, normal)) / denom))
+
+    rhs = np.array([float(np.dot(gij, a)), float(np.dot(gij, b))])
+    coeff = np.linalg.solve(gram, rhs)
+    candidates = [a, b]
+    if coeff[0] >= 0.0 and coeff[1] >= 0.0:
+        projected = coeff[0] * a + coeff[1] * b
+        norm = np.linalg.norm(projected)
+        if norm > 1e-12:
+            candidates.append(projected / norm)
+
+    best_cos = max(float(np.dot(gij, candidate)) for candidate in candidates)
+    return float(np.arccos(np.clip(best_cos, -1.0, 1.0)) / np.pi)
 
 
 def truncated_aab_scores(
@@ -199,7 +222,10 @@ def cycle_sync(
     beta: float = 20.0,
     delta: float = 1e-8,
     init: str = "t-aab",
+    lambda_schedule: str = "t_over_t_plus_10",
 ) -> dict[str, np.ndarray]:
+    """Run Algorithm 1 with the paper's annealing schedule or ablation variants."""
+
     graph = build_graph(n, edges, directions)
     if init == "uniform":
         corruption = np.zeros(len(edges), dtype=float)
@@ -216,7 +242,19 @@ def cycle_sync(
     for t in range(1, t_max + 1):
         locations, alpha, residuals = weighted_location_solve(n, edges, directions, weights)
         s_cycle = cycle_scores(graph, locations, residuals, beta=beta)
-        lam = t / (t + 10.0)
+        if lambda_schedule == "t_over_t_plus_10":
+            lam = t / (t + 10.0)
+        elif lambda_schedule == "ten_over_t_plus_10":
+            lam = 10.0 / (t + 10.0)
+        elif lambda_schedule == "one":
+            lam = 1.0
+        elif lambda_schedule == "t_over_t_plus_5":
+            lam = t / (t + 5.0)
+        else:
+            raise ValueError(
+                "lambda_schedule must be one of "
+                "'t_over_t_plus_10', 'ten_over_t_plus_10', 'one', or 't_over_t_plus_5'"
+            )
         h = (1.0 - lam) * residuals + lam * s_cycle
         weights = np.exp(-4.0 * h) / (h + delta)
         weights = np.clip(weights, 1e-8, 1e8)

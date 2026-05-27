@@ -24,6 +24,21 @@
           "type": "baseline",
           "median_location_error": 0.36,
           "mean_corruption_fraction": 0.7
+        },
+        "cycle_sync_reverse": {
+          "type": "proposed",
+          "median_location_error": 0.27,
+          "mean_corruption_fraction": 0.7
+        },
+        "cycle_sync_cycle_only": {
+          "type": "proposed",
+          "median_location_error": 0.37,
+          "mean_corruption_fraction": 0.7
+        },
+        "cycle_sync_fast": {
+          "type": "proposed",
+          "median_location_error": 0.29,
+          "mean_corruption_fraction": 0.7
         }
       }
     },
@@ -50,6 +65,21 @@
         "welsch_irls": {
           "type": "baseline",
           "median_location_error": 0.32,
+          "mean_corruption_fraction": 0.45
+        },
+        "cycle_sync_reverse": {
+          "type": "proposed",
+          "median_location_error": 0.18,
+          "mean_corruption_fraction": 0.45
+        },
+        "cycle_sync_cycle_only": {
+          "type": "proposed",
+          "median_location_error": 0.20,
+          "mean_corruption_fraction": 0.45
+        },
+        "cycle_sync_fast": {
+          "type": "proposed",
+          "median_location_error": 0.17,
           "mean_corruption_fraction": 0.45
         }
       }
