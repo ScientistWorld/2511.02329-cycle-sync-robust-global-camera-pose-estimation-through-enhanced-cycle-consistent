@@ -1,5 +1,5 @@
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: "Packaging audit passed: synthetic data needs no external fetches, download.sh is self-contained, and data/downloads/.gitkeep is trackable."
+notes: "CPU validation job: regenerate Cycle-Sync and baseline outputs from scratch via scripts/reproduce.sh, score train/test slices, and run validate.py --compare after expanding the score contract."

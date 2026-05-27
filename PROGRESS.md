@@ -25,6 +25,8 @@ These results support the core claim and the supplementary annealing ablation nu
 
 Continuation audit on 2026-05-27 confirmed that `method/cycle_sync.py` contains the paper's recognizable Cycle-Sync computation, `eval/` scores saved artifacts without importing `method/`, and the core reproduced scores in `scoring/scores.json` are real compute-container outputs. CPU job `4e1d83ec-1f1` then regenerated the expanded annealing-schedule artifacts and passed validation.
 
+Follow-up packaging audit on 2026-05-27 found that `scripts/run.sh` only re-scored existing artifacts. It has been updated to run `scripts/reproduce.sh` first, then train/test scoring and `python validate.py --compare`, so the submitted CPU job verifies regeneration from scratch. The main evaluator now emits the full declared score contract, including mean error, p90 error, and benchmark instance validity, rather than only median error and corruption fraction.
+
 Prepared a follow-up reproduction of the paper's full annealing ablation in Supplement Tables 14 and 15:
 - `cycle_sync`: `lambda_t = t/(t+10)`
 - `welsch_irls`: `lambda_t = 0`
