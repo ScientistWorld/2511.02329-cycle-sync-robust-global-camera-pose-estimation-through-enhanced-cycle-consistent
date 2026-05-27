@@ -113,12 +113,27 @@ Synthetic camera locations are sampled from `N(0, I_3)`. The viewing graph is Er
 
 </details>
 
+### Iteration 2: gpt-5.5
+- **Milestone**: `core_claim_plus` | **Status**: done
+- **Working time**: 6m | **GPU**: 0.0h
+- **Jobs**: 4 total (2 completed, 2 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-27 00:00] - core_claim_plus
+- Validated Cycle-Sync synthetic location reproduction on uniform high-noise corruption and adversarial high-noise corruption.
+- Confirmed the paper's proposed cycle-weighted solver improves over residual-only Welsch IRLS on both supported benchmark settings.
+- Revalidated the package with the paper's L1 translation-scale alignment objective.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `core_claim`.
+- Completed at milestone `core_claim_plus`.
