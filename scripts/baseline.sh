@@ -18,4 +18,7 @@ set -e
 cd /home/user
 
 python baseline/run_irls.py "$@"
-bash scripts/evaluate.sh
+
+if [ "${SKIP_EVALUATE:-0}" != "1" ]; then
+    bash scripts/evaluate.sh
+fi

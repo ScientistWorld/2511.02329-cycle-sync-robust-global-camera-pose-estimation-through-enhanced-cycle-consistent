@@ -1,9 +1,10 @@
 #!/bin/bash
 # Reproduce the paper's results end-to-end.
 #
-# This script runs inside the compute container and should call
+# This script runs inside the compute container and calls
 # scripts/baseline.sh and scripts/method.sh to run baselines and
-# the paper's method, each of which calls scripts/evaluate.sh.
+# the paper's method. It scores once at the end so an interrupted
+# long run does not leave scoring/scores.json with a partial result.
 #
 # Assumes:
 #   - Container is built (environment/container.sif)
@@ -20,6 +21,6 @@ cd /home/user
 
 rm -rf outputs/cycle_sync outputs/cycle_sync_reverse outputs/cycle_sync_cycle_only outputs/cycle_sync_fast outputs/irls
 
-bash scripts/baseline.sh --n 100 --p 0.5 --trials 10 --t-max 20
-bash scripts/method.sh --n 100 --p 0.5 --trials 10 --t-max 20
+SKIP_EVALUATE=1 bash scripts/baseline.sh --n 100 --p 0.5 --trials 10 --t-max 20
+SKIP_EVALUATE=1 bash scripts/method.sh --n 100 --p 0.5 --trials 10 --t-max 20
 bash scripts/evaluate.sh

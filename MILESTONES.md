@@ -23,3 +23,7 @@
 ### [2026-05-27 00:52] - secondary_claims
 - Updated `scripts/run.sh` to regenerate the reproduction outputs from scratch before scoring.
 - Expanded the main evaluator to write every declared metric in `scoring/reference.json`; milestone remains `secondary_claims` while the validation job runs.
+
+### [2026-05-27 01:33] - secondary_claims
+- CPU validation job `20621f4b-374` was killed before completing all ablation artifacts, leaving a partial `scores.json`.
+- Added restart-safe scoring behavior and prepared a CPU continuation job to regenerate the missing ablation outputs, rewrite all score files, and rerun validation.

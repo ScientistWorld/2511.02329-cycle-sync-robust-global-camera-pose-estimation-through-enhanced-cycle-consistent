@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
-test: true
+test: false
 milestone: secondary_claims
-notes: "CPU validation job: regenerate Cycle-Sync and baseline outputs from scratch via scripts/reproduce.sh, score train/test slices, and run validate.py --compare after expanding the score contract."
+notes: "CPU continuation job: regenerate missing Cycle-Sync ablation artifacts after killed validation run, rewrite all score files, and run validate.py --compare."

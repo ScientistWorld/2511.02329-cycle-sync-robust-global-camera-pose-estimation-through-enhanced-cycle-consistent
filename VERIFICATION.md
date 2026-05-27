@@ -10,6 +10,7 @@ The workspace entered final verification at `secondary_claims`. The claimed mile
 - Minor: `baseline/run_irls.py` imported a helper from `method/`, making the baseline less cleanly separable from the paper method.
 - Minor: Python bytecode caches under `data/` were not ignored.
 - Pending validation: `eval/evaluate_outputs.py` was expanded to emit all metrics declared in `scoring/reference.json`, so `scoring/scores.json` must be regenerated in the compute container.
+- Pending validation: CPU job `20621f4b-374` was killed during full from-scratch regeneration, so the next job resumes the missing ablation artifacts and rewrites the score files.
 - Cosmetic infrastructure issue: tracked root files `README.md`, `manifest.json`, and `trajectory/turn_*.jsonl` are reported dirty by git, but they are device/read-only session artifacts that cannot be restored from this environment.
 
 ## Fixes Applied
@@ -19,10 +20,12 @@ The workspace entered final verification at `secondary_claims`. The claimed mile
 - Added Python bytecode patterns to `.gitignore`.
 - Syntax-checked the changed Python files with `python -m py_compile`.
 - Left `action.yaml` set to submit a CPU test job that runs `scripts/reproduce.sh`, train/test evaluation, and `python validate.py --compare`.
+- Added `SKIP_EVALUATE=1` support to `scripts/baseline.sh` and `scripts/method.sh`, and updated `scripts/reproduce.sh` to score only once after all artifacts are written.
+- Updated `scripts/run.sh` to complete the missing ablation artifacts from the interrupted validation run before regenerating `scores.json`, `scores_train.json`, and `scores_test.json`.
 
 ## Final Judgment
 
-The workspace is structurally ready after the documentation and separation fixes, but the expanded main score contract needs one compute-container regeneration before final `done`.
+The workspace is structurally ready after the documentation and separation fixes, but the expanded main score contract still needs one compute-container continuation job before final `done`.
 
 - Milestone: secondary_claims
 - Ready for gym use: partial pending CPU validation

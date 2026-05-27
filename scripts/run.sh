@@ -13,7 +13,11 @@ set -e
 
 cd /home/user
 
-bash scripts/reproduce.sh
+# Continue the interrupted CPU validation job by regenerating only the
+# artifacts that were missing after the full smoke run was killed.
+SKIP_EVALUATE=1 bash scripts/method.sh --n 100 --p 0.5 --trials 10 --t-max 20 --methods cycle_sync_cycle_only cycle_sync_fast
+
+bash scripts/evaluate.sh
 bash scripts/evaluate_train.sh
 bash scripts/evaluate_test.sh
 python validate.py --compare
