@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Core reproduction already passed in compute: Cycle-Sync variants beat Welsch IRLS on uniform and adversarial high-noise settings. Train/test split also complete: 50 train metrics and 50 test metrics; caveat: mean_corruption_fraction is retained as zero-weight TARGETS compatibility diagnostic."
+notes: "Packaging audit passed: synthetic data needs no external fetches, download.sh is self-contained, and data/downloads/.gitkeep is trackable."
