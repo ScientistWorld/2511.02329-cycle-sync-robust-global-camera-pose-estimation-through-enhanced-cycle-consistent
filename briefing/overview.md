@@ -13,4 +13,5 @@ The paper addresses robust global camera pose estimation, with emphasis on estim
 
 - Synthetic high-noise uniform corruption (`q=0.7`, `sigma=0.2`): reported median error `0.24` versus `0.36` for residual-only reweighting.
 - Synthetic high-noise adversarial corruption (`q=0.45`, `sigma=0.2`): reported median error `0.17` versus `0.32` for residual-only reweighting.
+- This reproduction scores the same two high-noise synthetic settings and the supplementary annealing-schedule variants from Tables 14 and 15.
 - On ETH3D location-estimation comparisons, the paper reports average median error near `0.01` for Cycle-Sync under STE preprocessing.

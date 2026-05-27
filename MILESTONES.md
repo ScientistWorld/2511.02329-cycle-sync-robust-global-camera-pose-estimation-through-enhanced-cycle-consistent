@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -15,3 +15,7 @@
 ### [2026-05-27 00:09] - core_claim_plus
 - Continuation audit confirmed the existing core results are from the implemented Cycle-Sync algorithm and an independent artifact evaluator.
 - Expanded annealing-schedule outputs were absent, so a CPU reproduction job is being resubmitted before claiming `secondary_claims`.
+
+### [2026-05-27 00:37] - secondary_claims
+- CPU job `4e1d83ec-1f1` regenerated all high-noise synthetic outputs and passed `python validate.py --compare` in the compute container.
+- Reproduced the paper's annealing-schedule ablation for `lambda_t=t/(t+10)`, residual-only Welsch IRLS, reverse annealing, cycle-only weighting, and fast annealing on both uniform and adversarial high-noise settings.

@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: false
-milestone: core_claim_plus
-notes: "Continuation audit restored core_claim_plus; resubmitting CPU job to regenerate all Cycle-Sync annealing schedules from Supplement Tables 14 and 15 and run validate.py --compare."
+milestone: secondary_claims
+notes: "Compute job 4e1d83ec-1f1 passed validation and reproduced the high-noise synthetic Cycle-Sync annealing ablation from Supplement Tables 14 and 15. Remaining higher milestones require the full real-image SfM pipeline."
