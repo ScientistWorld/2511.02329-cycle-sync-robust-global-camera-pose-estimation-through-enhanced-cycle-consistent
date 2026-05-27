@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "CPU continuation job: regenerate missing Cycle-Sync ablation artifacts after killed validation run, rewrite all score files, and run validate.py --compare."
+notes: "Final verification passed after CPU continuation job regenerated missing ablations and validate.py --compare reported all checks passed."

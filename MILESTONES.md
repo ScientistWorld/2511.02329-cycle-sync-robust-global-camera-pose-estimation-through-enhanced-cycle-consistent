@@ -27,3 +27,7 @@
 ### [2026-05-27 01:33] - secondary_claims
 - CPU validation job `20621f4b-374` was killed before completing all ablation artifacts, leaving a partial `scores.json`.
 - Added restart-safe scoring behavior and prepared a CPU continuation job to regenerate the missing ablation outputs, rewrite all score files, and rerun validation.
+
+### [2026-05-27 01:45] - secondary_claims
+- CPU continuation job `2af2234f-ef6` completed successfully with exit code 0.
+- The regenerated artifacts cover all five reported synthetic methods on both high-noise experiments; `python validate.py --compare` reports all checks passed.

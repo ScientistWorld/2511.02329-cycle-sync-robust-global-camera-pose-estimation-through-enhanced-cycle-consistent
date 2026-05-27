@@ -25,7 +25,9 @@ These results support the core claim and the supplementary annealing ablation nu
 
 Continuation audit on 2026-05-27 confirmed that `method/cycle_sync.py` contains the paper's recognizable Cycle-Sync computation, `eval/` scores saved artifacts without importing `method/`, and the core reproduced scores in `scoring/scores.json` are real compute-container outputs. CPU job `4e1d83ec-1f1` then regenerated the expanded annealing-schedule artifacts and passed validation.
 
-Follow-up packaging audit on 2026-05-27 found that `scripts/run.sh` only re-scored existing artifacts. It was updated to run `scripts/reproduce.sh` first, then train/test scoring and `python validate.py --compare`. CPU job `20621f4b-374` was killed during that full test-lane regeneration, after producing complete baseline, default Cycle-Sync, and reverse-annealing artifacts but before all ablations were finished. The runner now resumes by regenerating the missing ablation artifacts only, and `scripts/reproduce.sh` suppresses intermediate scoring until the full output set exists.
+Follow-up packaging audit on 2026-05-27 found that `scripts/run.sh` only re-scored existing artifacts. It was updated to run `scripts/reproduce.sh` first, then train/test scoring and `python validate.py --compare`. CPU job `20621f4b-374` was killed during that full test-lane regeneration, after producing complete baseline, default Cycle-Sync, and reverse-annealing artifacts but before all ablations were finished. The runner was changed to resume by regenerating the missing ablation artifacts only, and `scripts/reproduce.sh` now suppresses intermediate scoring until the full output set exists.
+
+CPU continuation job `2af2234f-ef6` completed successfully with exit code 0. It regenerated the missing `cycle_sync_cycle_only` and `cycle_sync_fast` artifacts, rewrote `scoring/scores.json`, `scoring/scores_train.json`, and `scoring/scores_test.json`, and `python validate.py --compare` reports all checks passed.
 
 The main evaluator emits the full declared score contract, including mean error, p90 error, and benchmark instance validity, rather than only median error and corruption fraction.
 
@@ -57,6 +59,8 @@ Job `e5e37f80-b8b` reran the two supported experiments and passed `python valida
 Job `4e1d83ec-1f1` reran the full synthetic high-noise score contract with all annealing schedules from Supplement Tables 14 and 15 and passed `python validate.py --compare` in the compute container.
 
 Job `20621f4b-374` was killed with exit code `-9` during from-scratch CPU validation, likely because the complete 10-trial all-method reproduction exceeded the short test-lane budget. The logs were not available at the reported scratch paths from this container. The interrupted run left `scoring/scores.json` with baseline-only results because `baseline.sh` scored immediately; this has been fixed by adding `SKIP_EVALUATE=1` support for bundled runs and scoring once after all artifacts are present.
+
+Job `2af2234f-ef6` completed the continuation validation successfully. The reported scratch log paths were not readable from this container, but the job exit code was 0, all five output manifests are present, train/test score files contain matching method keys, and `python validate.py --compare` passes locally on the regenerated artifacts.
 
 ## Deviations from Paper
 
