@@ -12,20 +12,6 @@
         }
       }
     },
-    "uniform_exact_recovery": {
-      "results": {
-        "cycle_sync": {
-          "exact_recovery_rate": 0.0,
-          "mean_corruption_fraction": 0.6978464142352662,
-          "median_location_error": 0.10047511490975806
-        },
-        "welsch_irls": {
-          "exact_recovery_rate": 0.0,
-          "mean_corruption_fraction": 0.6978464142352662,
-          "median_location_error": 0.26108550411453474
-        }
-      }
-    },
     "uniform_high_noise": {
       "results": {
         "cycle_sync": {
