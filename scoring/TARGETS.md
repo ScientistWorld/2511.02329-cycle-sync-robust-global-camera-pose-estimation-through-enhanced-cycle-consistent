@@ -1,15 +1,19 @@
 # Evaluation Targets
 
-## Primary: uniform_high_noise
-Tests camera-location recovery under high random outlier corruption with additive direction noise.
-- **Metric**: `median_location_error` (lower is better)
-- **Constraint metric**: `mean_corruption_fraction` (the benchmark must keep the high-corruption setting fixed)
-- **Methods scored**: residual-only reweighting and the four annealing schedules from Supplement Table 14
-- **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
+## uniform_high_noise
 
-## Primary: adversarial_high_noise
-Tests camera-location recovery under cycle-consistent adversarial outlier corruption with additive direction noise.
-- **Metric**: `median_location_error` (lower is better)
-- **Constraint metric**: `mean_corruption_fraction` (the benchmark must keep the near-limit adversarial corruption setting fixed)
-- **Methods scored**: residual-only reweighting and the four annealing schedules from Supplement Table 15
-- **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
+Optimize camera-location recovery under high independent random direction corruption with additive noise.
+
+- Primary metric: `median_location_error` (lower is better)
+- Supporting metrics: `mean_location_error`, `p90_location_error`
+- Constraint checks: `benchmark_instance_valid_rate`, `mean_corruption_fraction`
+- Standard run: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
+
+## adversarial_high_noise
+
+Optimize camera-location recovery under high cycle-consistent adversarial direction corruption with additive noise.
+
+- Primary metric: `median_location_error` (lower is better)
+- Supporting metrics: `mean_location_error`, `p90_location_error`
+- Constraint checks: `benchmark_instance_valid_rate`, `mean_corruption_fraction`
+- Standard run: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`

@@ -93,6 +93,8 @@ AGENTS.md
 CLAUDE.md
 
 # Python package / build directories (agents install under many names)
+__pycache__/
+*.py[cod]
 .python_packages/
 .cache/
 # Pip cache variants (beyond .cache/)
