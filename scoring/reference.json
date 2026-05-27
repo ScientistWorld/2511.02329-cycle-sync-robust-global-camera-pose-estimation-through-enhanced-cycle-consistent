@@ -7,11 +7,28 @@
       "metrics": {
         "median_location_error": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Headline translation recovery error after similarity-gauge alignment, averaged over selected trials."
+        },
+        "mean_location_error": {
+          "higher_is_better": false,
+          "coefficient": -0.4,
+          "description": "Average per-camera translation error after alignment, catching methods that improve the median while leaving many cameras poor."
+        },
+        "p90_location_error": {
+          "higher_is_better": false,
+          "coefficient": -0.6,
+          "description": "Ninetieth-percentile per-camera translation error after alignment, emphasizing tail failures under heavy corruption."
         },
         "mean_corruption_fraction": {
           "higher_is_better": true,
-          "coefficient": 0.2
+          "coefficient": 0.0,
+          "description": "Diagnostic-only empirical corruption fraction retained for compatibility with earlier score files."
+        },
+        "benchmark_instance_valid_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Fraction of scored artifacts matching the benchmark's intended problem size, graph density, noise, and corruption setting."
         }
       },
       "results": {
@@ -49,11 +66,28 @@
       "metrics": {
         "median_location_error": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Headline translation recovery error after similarity-gauge alignment, averaged over selected trials."
+        },
+        "mean_location_error": {
+          "higher_is_better": false,
+          "coefficient": -0.4,
+          "description": "Average per-camera translation error after alignment, catching methods that improve the median while leaving many cameras poor."
+        },
+        "p90_location_error": {
+          "higher_is_better": false,
+          "coefficient": -0.6,
+          "description": "Ninetieth-percentile per-camera translation error after alignment, emphasizing tail failures under adversarial corruption."
         },
         "mean_corruption_fraction": {
           "higher_is_better": true,
-          "coefficient": 0.2
+          "coefficient": 0.0,
+          "description": "Diagnostic-only empirical corruption fraction retained for compatibility with earlier score files."
+        },
+        "benchmark_instance_valid_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Fraction of scored artifacts matching the benchmark's intended problem size, graph density, noise, and corruption setting."
         }
       },
       "results": {

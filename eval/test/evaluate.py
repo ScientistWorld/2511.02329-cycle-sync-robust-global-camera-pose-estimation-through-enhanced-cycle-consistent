@@ -15,6 +15,10 @@ DEFAULT_OUTPUT = "scoring/scores_test.json"
 DEFAULT_DIAGNOSTICS = "scoring/diagnostics_test.json"
 DEFAULT_TRAIN_SCORES = "scoring/scores_train.json"
 DEFAULT_ALIAS = {"irls": "welsch_irls"}
+EXPECTED_CONFIGS = {
+    "uniform_high_noise": {"n": 80, "p": 0.5, "q": 0.7, "sigma": 0.2, "corruption": "uniform"},
+    "adversarial_high_noise": {"n": 80, "p": 0.5, "q": 0.45, "sigma": 0.2, "corruption": "adversarial"},
+}
 
 
 def geometric_median(points: np.ndarray, max_iters: int = 100, tol: float = 1e-8) -> np.ndarray:
@@ -59,10 +63,36 @@ def l1_similarity_align(reference: np.ndarray, estimate: np.ndarray) -> np.ndarr
     return scale * est + translation
 
 
-def median_location_error(reference: np.ndarray, estimate: np.ndarray) -> float:
+def location_errors(reference: np.ndarray, estimate: np.ndarray) -> np.ndarray:
     aligned = l1_similarity_align(reference, estimate)
-    errors = np.linalg.norm(np.asarray(reference) - aligned, axis=1)
-    return float(np.median(errors))
+    return np.linalg.norm(np.asarray(reference) - aligned, axis=1)
+
+
+def scalar_string(value: object) -> str:
+    if isinstance(value, np.ndarray):
+        return str(value.item())
+    return str(value)
+
+
+def scalar_float(value: object) -> float:
+    if isinstance(value, np.ndarray):
+        return float(value.item())
+    return float(value)
+
+
+def benchmark_instance_valid(exp_name: str, artifact: object) -> float:
+    expected = EXPECTED_CONFIGS.get(exp_name)
+    if expected is None:
+        return 1.0
+    empirical_q = float(np.mean(artifact["corrupted"]))
+    return float(
+        int(scalar_float(artifact["n"])) == expected["n"]
+        and abs(scalar_float(artifact["p"]) - expected["p"]) <= 1e-12
+        and abs(scalar_float(artifact["q"]) - expected["q"]) <= 1e-12
+        and abs(scalar_float(artifact["sigma"]) - expected["sigma"]) <= 1e-12
+        and scalar_string(artifact["corruption"]) == expected["corruption"]
+        and abs(empirical_q - expected["q"]) <= 0.10
+    )
 
 
 def exact_recovery_rate(errors: list[float], threshold: float = 1e-4) -> float:
@@ -150,17 +180,27 @@ def evaluate_manifest(
         if not selected_files:
             continue
         medians = []
+        means = []
+        p90s = []
         edges = []
         corruptions = []
+        valid_instances = []
         for file_name in selected_files:
             with np.load(file_name, allow_pickle=False) as z:
-                medians.append(median_location_error(z["locations_true"], z["locations_est"]))
+                errors = location_errors(z["locations_true"], z["locations_est"])
+                medians.append(float(np.median(errors)))
+                means.append(float(np.mean(errors)))
+                p90s.append(float(np.percentile(errors, 90)))
                 edges.append(len(z["edges"]))
                 corruptions.append(float(np.mean(z["corrupted"])))
+                valid_instances.append(benchmark_instance_valid(exp_name, z))
 
         all_scores = {
             "median_location_error": float(np.mean(medians)),
+            "mean_location_error": float(np.mean(means)),
+            "p90_location_error": float(np.mean(p90s)),
             "mean_corruption_fraction": float(np.mean(corruptions)),
+            "benchmark_instance_valid_rate": float(np.mean(valid_instances)),
             "exact_recovery_rate": exact_recovery_rate(medians),
         }
         allowed = metric_filter.get(exp_name) if metric_filter else None
@@ -171,8 +211,11 @@ def evaluate_manifest(
             "slice": SLICE_NAME,
             "selected_files": selected_files,
             "trial_median_location_errors": [float(x) for x in medians],
+            "trial_mean_location_errors": [float(x) for x in means],
+            "trial_p90_location_errors": [float(x) for x in p90s],
             "std_median_location_error": float(np.std(medians)),
             "exact_recovery_rate": exact_recovery_rate(medians),
+            "benchmark_instance_valid_rate": float(np.mean(valid_instances)),
             "mean_num_edges": float(np.mean(edges)),
             "num_trials": float(len(medians)),
         }
