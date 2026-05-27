@@ -1,9 +1,4 @@
-# This iteration writes files only — do NOT submit compute jobs.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
-milestone: secondary_claims
-notes: "Improvements: added train/test tail-error metrics and benchmark instance validity constraint; zero-weighted corruption fraction diagnostic. Notes: see DESIGN_NOTES.md for artifact-trust and small-split runtime concerns."
+notes: "Run evaluate_train.sh and evaluate_test.sh on saved final method outputs; populate train/test scores and diagnostics."
