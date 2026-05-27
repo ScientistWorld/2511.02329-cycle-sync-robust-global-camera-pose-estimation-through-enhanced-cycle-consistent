@@ -20,21 +20,26 @@ The paper addresses robust global camera pose estimation, with emphasis on estim
 
 # Problem Definition
 
-What problem does this paper address? Write this so that someone with no knowledge of the paper can understand what needs to be solved and how success is measured.
-
-Do NOT describe the paper's method or solution here — only the problem itself. Think about if a future scientist agent try to solve this problem from scratch without knowing what approach the paper took. If you leak the solution, you compromise the benchmark.
-
 ## Research Question
 
-Estimate absolute 3D camera locations from a graph of noisy, outlier-corrupted pairwise unit direction measurements. The estimates are only identifiable up to global translation and scale, so a solution must recover the relative camera configuration despite missing distances, graph sparsity, noise, and severe direction corruption.
+Recover absolute 3D camera locations from a measurement graph whose edges contain pairwise unit direction observations between cameras. The recovered locations are identifiable only up to a global translation and scale, so the task is to estimate the relative camera configuration.
 
-## Why It Matters
+## Inputs and Outputs
 
-Camera poses are a core input to structure-from-motion, 3D reconstruction, robotics, AR/VR, neural rendering, and Gaussian splatting. A robust global location estimator reduces reliance on incremental pipelines and bundle adjustment when pairwise image matches contain many outliers.
+Each problem instance provides:
+- `n` cameras.
+- An undirected viewing graph over the cameras.
+- A unit direction vector for each graph edge.
+
+A solver must output one 3D location per camera. It must not use ground-truth locations, hidden corruption labels, inter-camera distances, image measurements, or any information not present in the benchmark artifact.
+
+## Difficulty
+
+The benchmark stresses high outlier rates, noisy clean directions, missing graph edges, and variable inter-camera distances. Some outliers are independent random directions, while others are generated from an internally consistent but wrong camera configuration.
 
 ## Success Criteria
 
-A successful solution returns camera locations with low median aligned translation error, remains stable under high corruption rates, and does not collapse to trivial all-zero or near-collinear configurations. It should outperform a residual-only robust least-squares baseline at the same graph size, corruption model, noise level, and number of trials.
+A successful solution has low aligned camera-location error across multiple trials, remains stable under severe corruption, and preserves the benchmark settings for camera count, graph density, noise level, corruption model, and corruption rate.
 
 ---
 
@@ -62,21 +67,25 @@ Secondary claims: the approach improves deterministic recovery guarantees, stren
 
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
-The primary metric is median camera-location error. Estimated locations are aligned to ground truth by a global translation and scalar scale, then Euclidean error is computed per camera and the median over cameras is reported. Lower is better.
+The primary metric is `median_location_error`. Estimated locations are aligned to ground truth by solving for a single global scale and translation, then Euclidean error is computed for each camera and the median over cameras is reported. Lower is better.
 
-The score file also reports the realized corruption fraction as a constraint metric so improvements cannot come from silently reducing the benchmark difficulty. Diagnostic files record number of graph edges, number of trials, and exact-recovery rate. Exact recovery means median location error below `1e-4`, following the paper.
+The score also includes `mean_location_error` and `p90_location_error` to capture average and tail failures that a median alone can hide. `benchmark_instance_valid_rate` checks whether scored artifacts match the required instance settings. `mean_corruption_fraction` is reported as a diagnostic constraint on benchmark difficulty.
 
-## Baselines and Targets
+## Experiments
 
-The reference target for the proposed method is the paper's Supplement Table 14 and Table 15 synthetic annealing ablation: median error `0.24` for uniform corruption with `q=0.7`, `sigma=0.2`, and median error `0.17` for adversarial cycle-consistent corruption with `q=0.45`, `sigma=0.2`. The residual-only Welsch IRLS baseline from the same tables reports `0.36` and `0.32`, respectively. The benchmark also scores the paper's alternate annealing schedules from those tables.
+The benchmark contains two synthetic camera-location recovery settings:
+- `uniform_high_noise`: high-rate independent random direction outliers plus noisy clean measurements.
+- `adversarial_high_noise`: high-rate outliers that are mutually consistent with an alternative camera configuration, plus noisy clean measurements.
 
-## Evaluation Protocol
+Both settings use Gaussian 3D camera locations, an Erdos-Renyi viewing graph with edge probability `p=0.5`, `n=100` cameras, and 10 independent trials.
 
-Synthetic camera locations are sampled from `N(0, I_3)`. The viewing graph is Erdos-Renyi with edge probability `p=0.5`. The standard reproduction uses `n=100` cameras and 10 independent trials. Uniform corruption replaces a corrupted direction with a random Gaussian unit vector; adversarial corruption replaces it with a direction generated from an alternative camera cloud. Evaluation reads saved method artifacts in `outputs/` and writes `scoring/scores.json`.
+## Protocol
+
+Methods write artifacts under `outputs/<method_name>/manifest.json`. Each manifest maps experiment names to `.npz` artifact files containing the true locations, estimated locations, graph edges, directions, corruption mask, and instance metadata. `scripts/evaluate.sh` reads those artifacts and writes `scoring/scores.json`; it does not run any method code.
+
+Train and test evaluators split the same artifact set deterministically by trial filename hash. `scripts/evaluate_train.sh` writes `scoring/scores_train.json`; `scripts/evaluate_test.sh` writes `scoring/scores_test.json` and scores the same method keys present in the train file.
 
 ---
 
@@ -256,6 +265,44 @@ Synthetic camera locations are sampled from `N(0, I_3)`. The viewing graph is Er
 ### [2026-05-27 00:37] - secondary_claims
 - CPU job `4e1d83ec-1f1` regenerated all high-noise synthetic outputs and passed `python validate.py --compare` in the compute container.
 - Reproduced the paper's annealing-schedule ablation for `lambda_t=t/(t+10)`, residual-only Welsch IRLS, reverse annealing, cycle-only weighting, and fast annealing on both uniform and adversarial high-noise settings.
+
+</details>
+
+### Iteration 8: gpt-5.5 (verifier)
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 9m | **GPU**: 0.0h
+- **Jobs**: 9 total (6 completed, 3 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-27 00:07] - core_claim_plus
+- Previous compute-container runs validated Cycle-Sync on both high-noise uniform corruption and high-noise cycle-consistent adversarial corruption.
+- The reproduced median errors beat the residual-only Welsch IRLS baseline in both settings and are numerically close to the paper's Supplement Tables 14 and 15.
+
+### [2026-05-27 00:07] - core_claim_plus
+- Replaced the T-AAB initialization residual with the AAB-style geodesic distance to the positive-scale feasible cycle arc.
+- Added the paper's remaining annealing schedule variants for a follow-up CPU job; milestone remains `core_claim_plus` until those new results finish.
+
+### [2026-05-27 00:09] - core_claim_plus
+- Continuation audit confirmed the existing core results are from the implemented Cycle-Sync algorithm and an independent artifact evaluator.
+- Expanded annealing-schedule outputs were absent, so a CPU reproduction job is being resubmitted before claiming `secondary_claims`.
+
+### [2026-05-27 00:37] - secondary_claims
+- CPU job `4e1d83ec-1f1` regenerated all high-noise synthetic outputs and passed `python validate.py --compare` in the compute container.
+- Reproduced the paper's annealing-schedule ablation for `lambda_t=t/(t+10)`, residual-only Welsch IRLS, reverse annealing, cycle-only weighting, and fast annealing on both uniform and adversarial high-noise settings.
+
+### [2026-05-27 00:52] - secondary_claims
+- Updated `scripts/run.sh` to regenerate the reproduction outputs from scratch before scoring.
+- Expanded the main evaluator to write every declared metric in `scoring/reference.json`; milestone remains `secondary_claims` while the validation job runs.
+
+### [2026-05-27 01:33] - secondary_claims
+- CPU validation job `20621f4b-374` was killed before completing all ablation artifacts, leaving a partial `scores.json`.
+- Added restart-safe scoring behavior and prepared a CPU continuation job to regenerate the missing ablation outputs, rewrite all score files, and rerun validation.
+
+### [2026-05-27 01:45] - secondary_claims
+- CPU continuation job `2af2234f-ef6` completed successfully with exit code 0.
+- The regenerated artifacts cover all five reported synthetic methods on both high-noise experiments; `python validate.py --compare` reports all checks passed.
 
 </details>
 
