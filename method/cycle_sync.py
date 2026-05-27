@@ -102,9 +102,10 @@ def truncated_aab_scores(
 ) -> np.ndarray:
     """Estimate angular corruption using well-shaped 3-cycles.
 
-    The paper cites AAB's closed-form geodesic distance. For this reproducible
-    implementation, the same truncated AAB update is instantiated with the
-    standard coplanarity residual of a bearing triangle.
+    The paper cites AAB's closed-form geodesic distance. This implementation
+    measures the geodesic distance from the observed edge direction to the
+    positive-scale feasible arc induced by the two neighboring directions, then
+    applies the same truncated AAB aggregation over well-shaped cycles.
     """
 
     m = len(graph.edges)

@@ -23,6 +23,8 @@ These results support the core claim numerically. The scorer contract is now ver
 
 ## Current Iteration
 
+Continuation audit on 2026-05-27 confirmed that `method/cycle_sync.py` contains the paper's recognizable Cycle-Sync computation, `eval/` scores saved artifacts without importing `method/`, and the core reproduced scores in `scoring/scores.json` are real compute-container outputs. The expanded annealing-schedule artifacts were not present in `outputs/`, so this iteration resubmits the CPU reproduction before claiming `secondary_claims`.
+
 Prepared a follow-up reproduction of the paper's full annealing ablation in Supplement Tables 14 and 15:
 - `cycle_sync`: `lambda_t = t/(t+10)`
 - `welsch_irls`: `lambda_t = 0`
@@ -34,7 +36,7 @@ The next CPU job will regenerate all outputs from scratch and run `python valida
 
 ## Remaining
 
-An attempted expansion to the paper's noiseless uniform-corruption exact-recovery claim did not pass: with the current approximate T-AAB initializer, `uniform_exact_recovery` produced `0.1005` median error and `0.0` exact-recovery rate. That unsupported target was removed from the score contract rather than claimed.
+An earlier attempted expansion to the paper's noiseless uniform-corruption exact-recovery claim did not pass: `uniform_exact_recovery` produced `0.1005` median error and `0.0` exact-recovery rate before the AAB-style geodesic initializer update. That unsupported target was removed from the score contract rather than claimed.
 
 To reach still higher milestones, implement the full real-image SfM pipeline: MPLS-cycle sample generation, STE direction estimation, and ETH3D/IMC style experiments. The current environment focuses on the paper's synthetic location-estimation experiments.
 
