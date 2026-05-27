@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "Rerun CPU reproduction after removing the unsupported exact-recovery target and keeping the paper-aligned L1 evaluator."
+notes: "Validated core_claim_plus reproduction in job e5e37f80-b8b with paper-aligned L1 evaluation. Stopping with packaged synthetic Cycle-Sync benchmark."

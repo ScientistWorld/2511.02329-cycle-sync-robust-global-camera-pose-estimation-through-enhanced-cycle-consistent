@@ -9,15 +9,14 @@ Implemented a runnable Cycle-Sync synthetic benchmark:
 - `scripts/reproduce.sh` runs both methods and writes `scoring/scores.json`.
 - First CPU job completed both synthetic experiments and wrote artifacts for Cycle-Sync and the residual-only baseline.
 - CPU validation job `b411c5f8-115` completed successfully and verified `python validate.py --compare` inside the compute container.
+- CPU validation job `e5e37f80-b8b` completed successfully after the evaluator was updated to the paper's L1 similarity alignment.
 - The packaged benchmark covers two synthetic settings, so it reaches `core_claim_plus`: high uniform corruption and cycle-consistent adversarial corruption.
 
 ## Results
 
-The first CPU job produced valid method artifacts but failed final validation because `scores.json` contained extra diagnostic fields not declared in `reference.json`.
-
-Observed reproduced numbers from the failed job's generated `scores.json`:
-- `uniform_high_noise`: Cycle-Sync median location error `0.2047`; residual-only Welsch IRLS `0.3630`; paper reference `0.24` and `0.36`.
-- `adversarial_high_noise`: Cycle-Sync median location error `0.1638`; residual-only Welsch IRLS `0.2465`; paper reference `0.17` and `0.32`.
+Final validated reproduced numbers from job `e5e37f80-b8b`:
+- `uniform_high_noise`: Cycle-Sync median location error `0.2002`; residual-only Welsch IRLS `0.3602`; paper reference `0.24` and `0.36`.
+- `adversarial_high_noise`: Cycle-Sync median location error `0.1307`; residual-only Welsch IRLS `0.2366`; paper reference `0.17` and `0.32`.
 
 These results support the core claim numerically. The scorer contract is now verified in-container.
 
@@ -34,6 +33,8 @@ The login-node Python environment lacks NumPy/SciPy, so numerical execution is d
 The continuation audit flagged that the original evaluator used an L2 similarity alignment. This has been replaced with an IRLS/Weiszfeld implementation of the paper's L1 translation-scale alignment before the expanded job.
 
 Job `68267221-a05` completed the expanded computation but failed validation because the unsupported exact-recovery experiment emitted a baseline method not present in `reference.json`. The evaluator now skips undeclared experiments when a reference contract is supplied, and the unsupported exact-recovery target has been removed.
+
+Job `e5e37f80-b8b` reran the two supported experiments and passed `python validate.py --compare` in the compute container.
 
 ## Deviations from Paper
 
