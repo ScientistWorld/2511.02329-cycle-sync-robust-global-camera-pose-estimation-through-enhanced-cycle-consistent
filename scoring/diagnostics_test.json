@@ -3,7 +3,7 @@
     "adversarial_high_noise": {
       "results": {
         "cycle_sync": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2474.0,
           "num_trials": 5.0,
@@ -39,7 +39,7 @@
           ]
         },
         "cycle_sync_cycle_only": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2474.0,
           "num_trials": 5.0,
@@ -75,7 +75,7 @@
           ]
         },
         "cycle_sync_fast": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2474.0,
           "num_trials": 5.0,
@@ -111,7 +111,7 @@
           ]
         },
         "cycle_sync_reverse": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2474.0,
           "num_trials": 5.0,
@@ -147,7 +147,7 @@
           ]
         },
         "welsch_irls": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2474.0,
           "num_trials": 5.0,
@@ -187,7 +187,7 @@
     "uniform_high_noise": {
       "results": {
         "cycle_sync": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2460.0,
           "num_trials": 5.0,
@@ -223,7 +223,7 @@
           ]
         },
         "cycle_sync_cycle_only": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2460.0,
           "num_trials": 5.0,
@@ -259,7 +259,7 @@
           ]
         },
         "cycle_sync_fast": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2460.0,
           "num_trials": 5.0,
@@ -295,7 +295,7 @@
           ]
         },
         "cycle_sync_reverse": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2460.0,
           "num_trials": 5.0,
@@ -331,7 +331,7 @@
           ]
         },
         "welsch_irls": {
-          "benchmark_instance_valid_rate": 0.0,
+          "benchmark_instance_valid_rate": 1.0,
           "exact_recovery_rate": 0.0,
           "mean_num_edges": 2460.0,
           "num_trials": 5.0,
