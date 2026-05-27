@@ -1,4 +1,4 @@
-action: submit
+action: done
 gpus: 0
 test: false
-notes: "Rerun train/test scoring after correcting benchmark_instance_valid_rate expected n from 80 to 100."
+notes: "Hash split over 10 saved trials per experiment; 50 train metrics and 50 test metrics. Train/test gaps are small and method ordering is stable; caveat: mean_corruption_fraction is retained as zero-weight TARGETS compatibility diagnostic."
