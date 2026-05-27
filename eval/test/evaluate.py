@@ -16,8 +16,8 @@ DEFAULT_DIAGNOSTICS = "scoring/diagnostics_test.json"
 DEFAULT_TRAIN_SCORES = "scoring/scores_train.json"
 DEFAULT_ALIAS = {"irls": "welsch_irls"}
 EXPECTED_CONFIGS = {
-    "uniform_high_noise": {"n": 80, "p": 0.5, "q": 0.7, "sigma": 0.2, "corruption": "uniform"},
-    "adversarial_high_noise": {"n": 80, "p": 0.5, "q": 0.45, "sigma": 0.2, "corruption": "adversarial"},
+    "uniform_high_noise": {"n": 100, "p": 0.5, "q": 0.7, "sigma": 0.2, "corruption": "uniform"},
+    "adversarial_high_noise": {"n": 100, "p": 0.5, "q": 0.45, "sigma": 0.2, "corruption": "adversarial"},
 }
 
 

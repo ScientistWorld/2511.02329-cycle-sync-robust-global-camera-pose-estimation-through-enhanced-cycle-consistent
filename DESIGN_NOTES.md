@@ -15,7 +15,11 @@ Changed:
 - Added missing metric descriptions in `scoring/reference.json`.
 
 Runtime concerns for the runner iteration:
+- First scoring run exposed a validity-metric bug: saved artifacts are
+  `n=100`, while the split evaluators were checking `n=80`. The validity
+  guard has been corrected to the artifact/problem scale used by the current
+  reproduction.
 - The split evaluators trust the artifact to contain `locations_true`, `locations_est`, and benchmark metadata. The validity metric checks metadata, but it cannot cryptographically prove that a malicious method did not forge ground truth inside its own `.npz` outputs. A stronger future design would store held-out problem files independently of method output and score estimates against those neutral files.
 - The train/test split is a deterministic hash split over artifact filenames. This is adequate for ten current trials per experiment, but if a future run emits very few trials the slices may become noisy.
-- `benchmark_instance_valid_rate` assumes the synthetic benchmark scale used by the current reproduction: `n=80`, `p=0.5`, `sigma=0.2`, and the experiment-specific corruption settings. If the runner intentionally changes benchmark scale, this metric must be updated alongside that change.
+- `benchmark_instance_valid_rate` assumes the synthetic benchmark scale used by the current reproduction: `n=100`, `p=0.5`, `sigma=0.2`, and the experiment-specific corruption settings. If the runner intentionally changes benchmark scale, this metric must be updated alongside that change.
 - I did not run the Python evaluators or produce score numbers because this iteration is file-edit-only.

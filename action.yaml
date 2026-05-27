@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Run evaluate_train.sh and evaluate_test.sh on saved final method outputs; populate train/test scores and diagnostics."
+notes: "Rerun train/test scoring after correcting benchmark_instance_valid_rate expected n from 80 to 100."
