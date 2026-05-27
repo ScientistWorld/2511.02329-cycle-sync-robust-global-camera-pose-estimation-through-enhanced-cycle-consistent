@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Final audit passed: Cycle-Sync synthetic core claim and annealing ablation are reproduced, scores validate, and scripts/run.sh now performs a clean full verification run."
+notes: "Final verification passed at secondary_claims; scoring, separation, and train/test checks validate, with only minor method-safe wording cleanup applied."

@@ -35,3 +35,7 @@
 ### [2026-05-27 01:49] - secondary_claims
 - Final audit confirmed the method implements the paper's Cycle-Sync location solver rather than a surrogate, and `eval/` remains method-independent.
 - Replaced the stale continuation-only `scripts/run.sh` with a clean final verification runner that regenerates the full synthetic benchmark before validation.
+
+### [2026-05-27 01:52] - secondary_claims
+- Final verification found no critical scoring, separation, or train/test issues; `python validate.py --compare` passes.
+- Reworded method-safe research direction guidance and removed ignored local bytecode caches.
