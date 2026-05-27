@@ -31,3 +31,7 @@
 ### [2026-05-27 01:45] - secondary_claims
 - CPU continuation job `2af2234f-ef6` completed successfully with exit code 0.
 - The regenerated artifacts cover all five reported synthetic methods on both high-noise experiments; `python validate.py --compare` reports all checks passed.
+
+### [2026-05-27 01:49] - secondary_claims
+- Final audit confirmed the method implements the paper's Cycle-Sync location solver rather than a surrogate, and `eval/` remains method-independent.
+- Replaced the stale continuation-only `scripts/run.sh` with a clean final verification runner that regenerates the full synthetic benchmark before validation.

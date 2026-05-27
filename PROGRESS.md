@@ -31,6 +31,8 @@ CPU continuation job `2af2234f-ef6` completed successfully with exit code 0. It 
 
 The main evaluator emits the full declared score contract, including mean error, p90 error, and benchmark instance validity, rather than only median error and corruption fraction.
 
+Final audit on 2026-05-27 confirmed that the reproduction implements the paper's actual Cycle-Sync location algorithm: T-AAB initialization, weighted least-squares location/scale updates, distance-based 3-cycle inconsistency aggregation, Welsch-style reweighting, and the annealing schedule variants from Supplement Tables 14 and 15. `scripts/run.sh` now performs a clean full benchmark regeneration and validation instead of resuming a past interrupted job.
+
 Prepared a follow-up reproduction of the paper's full annealing ablation in Supplement Tables 14 and 15:
 - `cycle_sync`: `lambda_t = t/(t+10)`
 - `welsch_irls`: `lambda_t = 0`
