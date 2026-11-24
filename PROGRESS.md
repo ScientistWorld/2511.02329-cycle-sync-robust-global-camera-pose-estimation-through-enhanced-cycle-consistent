@@ -1,3 +1,5 @@
+> **Superseded.** This file records earlier iterations (artifact manifests, Eq. 9-10 data, approximate WLS). The current gym — solver interface, hidden fixed instances, the authors' corruption models — is described in `briefing/`, `scoring/` and `HARDENING.md`.
+
 # Progress
 
 ## What Works

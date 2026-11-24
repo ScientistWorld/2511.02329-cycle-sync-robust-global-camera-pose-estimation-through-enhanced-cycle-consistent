@@ -1,10 +1,11 @@
 #!/bin/bash
-# Final hardening job: build the fixed train and hidden test instances from the
-# authors' released corruption models (replacing the earlier Eq. 9-10 reading),
-# score every registered solver on both from scratch, run the hardening
-# variants and shortcuts through the real evaluators, then validate.
-# --force regenerates the instances (new unrecorded test seeds); drop it to
-# rescore the committed instances.
+# Reproduce the gym end to end: score every registered solver (the paper's
+# Cycle-Sync, its annealing ablations and the baselines) on the fixed public
+# train instances and the hidden test instances, run the hardening variants and
+# shortcuts through the real evaluators, then validate.
+# The instance files are committed; make_instances.py only writes missing ones
+# (passing --force to eval/test/make_instances.py would draw a new hidden test
+# from fresh unrecorded seeds and invalidate every stored test score).
 
 set -e
 
@@ -12,8 +13,8 @@ cd /home/user
 
 python -c "import sys, numpy, scipy; print(sys.version); print('numpy', numpy.__version__, 'scipy', scipy.__version__)"
 
-python data/make_instances.py --force
-python eval/test/make_instances.py --force
+python data/make_instances.py
+python eval/test/make_instances.py
 python redteam/hardening/smoke.py
 
 mkdir -p redteam/hardening/results

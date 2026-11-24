@@ -39,3 +39,8 @@
 ### [2026-05-27 01:52] - secondary_claims
 - Final verification found no critical scoring, separation, or train/test issues; `python validate.py --compare` passes.
 - Reworded method-safe research direction guidance and removed ignored local bytecode caches.
+
+### [2026-11-24 07:10] - secondary_claims
+- Hardening (final pass): the synthetic generator now follows the authors' released corruption models; T-AAB temperatures and h clipping come from the authors' code; the paper's lambda=0 number is attached to the lambda=0 ablation (`cycle_sync_residual_only`); LUD added as a baseline.
+- Hidden test (40 instances per setting): Cycle-Sync 0.283 / 0.204 median error vs lambda=0 0.333 / 0.250; all five annealing schedules in the paper's order; noiseless exact recovery reproduced. `validate.py --post-design --compare` passes. Details in `HARDENING.md`.
+
