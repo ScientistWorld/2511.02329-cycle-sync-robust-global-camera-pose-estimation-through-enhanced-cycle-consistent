@@ -1,6 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: done
+action: pending
+gpus: 0
+test: false
 milestone: secondary_claims
-notes: "Redteam: hidden test trusts method-written ground truth (copy_truth +0.441 = 0 error), settings and labels (easier instances +0.21, oracle mask +0.14, trim cameras +0.05); missing/NaN experiments skipped (drop: -0.236 -> 0); score tracks quality on gym instances (refit +0.030, weaker -0.2..-0.5, seed std 0.021). See REDTEAM.md."
+notes: ""
