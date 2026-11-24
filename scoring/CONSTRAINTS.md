@@ -1,16 +1,23 @@
 # Scientist Constraints
 
+## Interface
+Submit a method as a solver script `scripts/solvers/cycle_sync.sh <input_dir> <output_dir>` (see `briefing/evaluation.md`): it reads the observations of each instance and writes an `n x 3` array of camera locations per instance. The evaluators run it on fixed instances; you do not produce score files yourself, and any score file you write is overwritten.
+
 ## Data and Problem Instances
-Use the synthetic camera-location generator in `data/synthetic.py` with the same experiment settings named in `scoring/reference.json`: Erdos-Renyi graph probability `p=0.5`, Gaussian 3D camera locations, and the specified corruption type, corruption probability, and noise level for each experiment. Do not replace these with easier synthetic patterns, real SfM scenes, or additional external data when reporting the benchmark score.
+The benchmark instances are fixed by the evaluators: 20 public train instances per setting in `data/instances/train/` and 40 hidden test instances per setting. You may generate as many additional development instances as you like with `data/synthetic.py` (same settings as the benchmark), but the scored instances cannot be replaced, resized or made easier.
+
+## Information Available to a Solver
+A solver may use only the inputs it is given: the camera count, the edge list, the observed directions and the setting's name. It must not read ground-truth locations, corruption labels, the evaluators' files, or anything left on disk by an evaluation run, and must not try to locate the hidden test instances.
 
 ## Evaluation
-Evaluate only saved output artifacts through `scripts/evaluate.sh`. Do not alter `eval/` to import the submitted method, regenerate outputs, change the alignment metric, or filter failed trials after the fact.
+Do not modify `eval/`, the metrics, the alignment, or the failure rules. Do not edit `scripts/evaluate_train.sh` / `scripts/evaluate_test.sh`.
 
 ## Resource Scale
-Use the same number of cameras and trials as the benchmark script for comparable scores. Increasing graph density, reducing corruption, reducing noise, or cherry-picking seeds is not a valid improvement.
+There is no time limit per instance, but a solver must run unattended, deterministically (fix any random seed) and offline. Learned components may be trained only on instances you generate with `data/synthetic.py`; no external camera datasets or pretrained models.
 
 ## Compliance Checklist
-- [ ] Experiments use the named settings from `scoring/reference.json`
-- [ ] Evaluation reads saved artifacts and does not call method code
-- [ ] No external data, pretrained models, or easier generated data are used
-- [ ] Camera count, graph density, corruption probability, noise level, and trial count are unchanged
+- [ ] The method is registered as `scripts/solvers/cycle_sync.sh` and writes `locations` for every instance
+- [ ] The solver uses only `n`, `edges`, `directions` and `experiment` from its input files
+- [ ] No ground truth, corruption labels or evaluator files are read
+- [ ] `eval/` and the evaluation scripts are unchanged
+- [ ] Outputs are deterministic for a given input

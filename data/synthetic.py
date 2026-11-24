@@ -1,11 +1,23 @@
-"""Synthetic camera-location data (the paper's Eqs. 9-10).
+"""Synthetic camera-location data: the corruption models of the paper's Sec. 3
+as implemented in the authors' released code (github.com/sli743/Cycle-Sync,
+``uniform_corruption_model`` / ``adversarial_corruption_model``, ports of the
+lab's UniformCorruptionModel.m / AdvCorruptionModel.m).
 
 Ground-truth camera locations are i.i.d. N(0, I_3); the viewing graph is
-Erdos-Renyi with edge probability p. Each edge (i, j), i < j, observes
-Normalize(t_i - t_j + sigma * eps) with probability 1 - q. With probability q
-it observes an outlier: Normalize(eps) under uniform corruption, or
-Normalize(t_i^c - t_j^c + sigma * eps) for an alternative camera cloud t^c
-under the cycle-consistent adversarial model.
+Erdos-Renyi with edge probability p. Edge (i, j), i < j, observes a unit
+direction approximating (t_i - t_j) / ||t_i - t_j||:
+
+* uniform model: with probability 1 - q, Normalize(g*_ij + sigma u_ij) where
+  g*_ij is the true unit direction and u_ij a uniformly random unit vector;
+  with probability q, a uniformly random unit vector (an unrelated outlier).
+* adversarial model: with probability q the true direction is replaced by the
+  direction of an alternative camera cloud t^c (Normalize(t^c_i - t^c_j)), so
+  corrupted edges are cycle-consistent among themselves; every edge then
+  observes Normalize(direction + sigma u_ij).
+
+The noise is added to the unit direction (bounded angular noise, independent
+of the edge length), as in the authors' code; the paper's Eqs. 9-10 write the
+noise on the unnormalised difference, which is not what produced its tables.
 
 This module is public. Use it to generate as many development instances as
 you like; the benchmark's fixed instances are described in
@@ -39,7 +51,7 @@ class SyntheticProblem:
     corrupted: np.ndarray
 
 
-def normalize(x: np.ndarray, eps: float = 1e-12) -> np.ndarray:
+def normalize(x: np.ndarray, eps: float = 1e-15) -> np.ndarray:
     norm = np.linalg.norm(x, axis=-1, keepdims=True)
     return x / np.maximum(norm, eps)
 
@@ -67,17 +79,16 @@ def generate_problem(
     if edges.size == 0:
         raise ValueError("generated graph has no edges")
 
-    clean = locations[ii] - locations[jj]
-    clean_noisy = clean + sigma * rng.normal(size=clean.shape)
+    true_dir = normalize(locations[ii] - locations[jj])
     bad = rng.random(len(edges)) < q
+    noise = normalize(rng.normal(size=true_dir.shape))
     if corruption == "uniform":
-        corrupted_vecs = rng.normal(size=clean.shape)
+        observed = true_dir + sigma * noise
+        observed[bad] = noise[bad]
     else:
-        corrupted_vecs = alt_locations[ii] - alt_locations[jj]
-        corrupted_vecs = corrupted_vecs + sigma * rng.normal(size=clean.shape)
-
-    observed = clean_noisy.copy()
-    observed[bad] = corrupted_vecs[bad]
+        observed = true_dir.copy()
+        observed[bad] = normalize(alt_locations[ii] - alt_locations[jj])[bad]
+        observed = observed + sigma * noise
     directions = normalize(observed)
 
     return SyntheticProblem(

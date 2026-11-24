@@ -1,7 +1,7 @@
 {
   "experiments": {
     "uniform_high_noise": {
-      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under uniform random direction corruption with q=0.7 and sigma=0.2, the setting of Supplement Table 14. Scored on 40 fixed hidden instances; each registered solver is run by the evaluator on observations only.",
+      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under uniform random direction corruption with q=0.7 and noise sigma=0.2 (sigma times a random unit vector added to each clean unit direction, the authors' released generator), the setting of Supplement Table 14. Scored on 40 fixed hidden instances; the evaluator runs each registered solver on observations only.",
       "weight": 0.5,
       "primary_metric": "median_location_error",
       "metrics": {
@@ -26,10 +26,6 @@
           "type": "proposed",
           "median_location_error": 0.24
         },
-        "welsch_irls": {
-          "type": "baseline",
-          "median_location_error": 0.36
-        },
         "cycle_sync_reverse": {
           "type": "proposed",
           "median_location_error": 0.27
@@ -41,12 +37,22 @@
         "cycle_sync_fast": {
           "type": "proposed",
           "median_location_error": 0.29
+        },
+        "cycle_sync_residual_only": {
+          "type": "baseline",
+          "median_location_error": 0.36
+        },
+        "welsch_irls": {
+          "type": "baseline"
+        },
+        "lud": {
+          "type": "baseline"
         }
       },
-      "_note": "results hold the paper's Supplement Table 14 median errors (10 trials, the authors' implementation). The paper reports only the median; mean and p90 are this gym's additional scored metrics."
+      "_note": "results hold the paper's Supplement Table 14 median errors (10 trials, the authors' implementation) for the annealing schedules lambda_t = t/(t+10) (cycle_sync), 10/(t+10) (reverse), 1 (cycle_only), t/(t+5) (fast) and 0 (cycle_sync_residual_only: residual-only reweighting inside the Cycle-Sync loop, T-AAB start). welsch_irls (the same residual-only reweighting from uniform weights) and lud (Least Unsquared Deviations by IRLS) are this gym's self-contained baselines; the paper reports no number for them in this setting. The paper reports only the median; mean and p90 are this gym's additional scored metrics. Up to the hardening pass the paper's lambda=0 number was attached to welsch_irls; it belongs to the lambda=0 ablation."
     },
     "adversarial_high_noise": {
-      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under cycle-consistent adversarial direction corruption with q=0.45 and sigma=0.2, the setting of Supplement Table 15. Scored on 40 fixed hidden instances; each registered solver is run by the evaluator on observations only.",
+      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under cycle-consistent adversarial corruption (corrupted edges point along an alternative camera configuration) with q=0.45 and noise sigma=0.2 on every edge (the authors' released generator), the setting of Supplement Table 15. Scored on 40 fixed hidden instances; the evaluator runs each registered solver on observations only.",
       "weight": 0.5,
       "primary_metric": "median_location_error",
       "metrics": {
@@ -71,10 +77,6 @@
           "type": "proposed",
           "median_location_error": 0.17
         },
-        "welsch_irls": {
-          "type": "baseline",
-          "median_location_error": 0.32
-        },
         "cycle_sync_reverse": {
           "type": "proposed",
           "median_location_error": 0.18
@@ -86,9 +88,19 @@
         "cycle_sync_fast": {
           "type": "proposed",
           "median_location_error": 0.17
+        },
+        "cycle_sync_residual_only": {
+          "type": "baseline",
+          "median_location_error": 0.32
+        },
+        "welsch_irls": {
+          "type": "baseline"
+        },
+        "lud": {
+          "type": "baseline"
         }
       },
-      "_note": "results hold the paper's Supplement Table 15 median errors (10 trials, the authors' implementation). The paper reports only the median; mean and p90 are this gym's additional scored metrics."
+      "_note": "results hold the paper's Supplement Table 15 median errors (10 trials, the authors' implementation) for the annealing schedules lambda_t = t/(t+10) (cycle_sync), 10/(t+10) (reverse), 1 (cycle_only), t/(t+5) (fast) and 0 (cycle_sync_residual_only: residual-only reweighting inside the Cycle-Sync loop, T-AAB start). welsch_irls (the same residual-only reweighting from uniform weights) and lud (Least Unsquared Deviations by IRLS) are this gym's self-contained baselines; the paper reports no number for them in this setting. The paper reports only the median; mean and p90 are this gym's additional scored metrics. Up to the hardening pass the paper's lambda=0 number was attached to welsch_irls; it belongs to the lambda=0 ablation."
     }
   }
 }

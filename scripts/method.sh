@@ -10,5 +10,5 @@ set -e
 cd /home/user
 
 python eval/train/evaluate.py \
-    --methods cycle_sync cycle_sync_reverse cycle_sync_cycle_only cycle_sync_fast \
+    --methods cycle_sync cycle_sync_reverse cycle_sync_cycle_only cycle_sync_fast cycle_sync_residual_only \
     --out outputs/scores_method.json --diagnostics-out outputs/diagnostics_method.json

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Run the residual-only Welsch IRLS baseline on the public train instances
-# through the solver interface and print its scores.
+# Run the self-contained baselines (residual-only Welsch IRLS and LUD) on the
+# public train instances through the solver interface and print their scores.
 #
 # Usage:
 #   bash scripts/baseline.sh
@@ -9,5 +9,5 @@ set -e
 
 cd /home/user
 
-python eval/train/evaluate.py --methods welsch_irls \
+python eval/train/evaluate.py --methods welsch_irls lud \
     --out outputs/scores_baseline.json --diagnostics-out outputs/diagnostics_baseline.json

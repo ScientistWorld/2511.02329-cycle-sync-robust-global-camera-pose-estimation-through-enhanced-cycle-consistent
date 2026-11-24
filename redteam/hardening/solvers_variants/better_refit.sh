@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardening check solver "better_refit" (same interface as scripts/solvers/*.sh).
+# Hardening variant "better_refit": better: Cycle-Sync, then an unweighted refit on its top (1-q)|E| edges by final weight.
 set -e
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"

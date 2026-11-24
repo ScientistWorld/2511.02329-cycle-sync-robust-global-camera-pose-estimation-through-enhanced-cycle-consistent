@@ -1,17 +1,22 @@
-"""Residual-only Welsch IRLS baseline (lambda_t = 0 reweighting, uniform start).
+"""Residual-only IRLS baselines for camera-location recovery.
 
 Self-contained: it does not import method/, so edits to the proposed method
-never change the baseline. Solver interface:
+never change the baselines. Solver interface:
 
-    python baseline/solve_irls.py --input-dir IN --output-dir OUT
+    python baseline/solve_irls.py --input-dir IN --output-dir OUT [--loss welsch|lud]
 
 Reads ``IN/*.npz`` (``n``, ``edges``, ``directions``) and writes
 ``OUT/<same name>`` with ``locations`` (n x 3).
 
 Each iteration solves the weighted least-squares problem
     min sum_e w_e ||t_i - t_j - alpha_e gamma_e||^2,  alpha_e >= 1,  sum_i t_i = 0
-exactly, then reweights every edge by its own residual with the Welsch-type
-rule w = exp(-4 r) / (r + delta).
+exactly, then reweights every edge by its own residual r, starting from
+uniform weights:
+
+* ``welsch`` (default): w = exp(-4 h) / (h + delta) with h = r clipped to
+  [1e-8, 10], i.e. the Welsch-type reweighting with no cycle information;
+* ``lud``: w = 1 / sqrt(r^2 + 1e-16), the IRLS solver of Least Unsquared
+  Deviations (rho(x) = |x|), 20 iterations as in the authors' release.
 """
 
 from __future__ import annotations
@@ -22,8 +27,8 @@ from pathlib import Path
 import numpy as np
 from scipy import linalg as sla
 
-WEIGHT_MIN = 1e-8
-WEIGHT_MAX = 1e8
+SCORE_MIN = 1e-8
+SCORE_MAX = 10.0
 
 
 def _scatter_edges(I, J, vec, n):
@@ -104,7 +109,7 @@ def wls_exact(n, I, J, gamma, w, t0=None, max_iter=100):
     return t, alpha, np.linalg.norm(res, axis=1)
 
 
-def welsch_irls(n, edges, directions, t_max=20, delta=1e-8):
+def irls(n, edges, directions, loss="welsch", t_max=20, delta=1e-8):
     edges = np.asarray(edges, dtype=np.int64)
     gamma = np.asarray(directions, dtype=float)
     I, J = edges[:, 0], edges[:, 1]
@@ -112,7 +117,11 @@ def welsch_irls(n, edges, directions, t_max=20, delta=1e-8):
     t = None
     for _ in range(t_max):
         t, _alpha, r = wls_exact(int(n), I, J, gamma, w, t0=t)
-        w = np.clip(np.exp(-4.0 * r) / (r + delta), WEIGHT_MIN, WEIGHT_MAX)
+        if loss == "lud":
+            w = 1.0 / np.sqrt(r * r + 1e-16)
+        else:
+            h = np.clip(r, SCORE_MIN, SCORE_MAX)
+            w = np.exp(-4.0 * h) / (h + delta)
     return t
 
 
@@ -121,6 +130,7 @@ def main() -> None:
     parser.add_argument("--input-dir", required=True)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--t-max", type=int, default=20)
+    parser.add_argument("--loss", choices=["welsch", "lud"], default="welsch")
     args = parser.parse_args()
     in_dir = Path(args.input_dir)
     out_dir = Path(args.output_dir)
@@ -130,7 +140,7 @@ def main() -> None:
             n = int(z["n"])
             edges = np.asarray(z["edges"], dtype=np.int64)
             directions = np.asarray(z["directions"], dtype=float)
-        locations = welsch_irls(n, edges, directions, t_max=args.t_max)
+        locations = irls(n, edges, directions, loss=args.loss, t_max=args.t_max)
         np.savez(out_dir / path.name, locations=np.asarray(locations, dtype=float))
 
 

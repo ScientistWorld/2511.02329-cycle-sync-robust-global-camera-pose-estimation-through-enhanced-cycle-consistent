@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardening check solver "cycle_sync" (same interface as scripts/solvers/*.sh).
+# Hardening variant "cycle_sync": the reference, rerun (must match the stored reference exactly).
 set -e
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"

@@ -5,23 +5,34 @@ through Enhanced Cycle-Consistent Synchronization" (Li, Shi, Lerman) for
 camera-location estimation from pairwise unit directions:
 
   1. T-AAB initialisation: AAB-style geodesic cycle inconsistencies over
-     well-shaped 3-cycles, aggregated by iteratively reweighted message passing;
-     initial weights w = exp(-20 s).
+     well-shaped 3-cycles, aggregated by iteratively reweighted message passing
+     with the temperatures of the authors' released code; initial weights
+     w = exp(-20 s).
   2. For t = 1..t_max:
        - weighted least squares (Eq. 3) over locations and per-edge scales,
          subject to alpha_ij >= 1 and sum_i t_i = 0 (solved exactly);
        - residuals r_ij = ||t_i - t_j - alpha_ij gamma_ij||;
        - cycle corruption scores s_ij (Eqs. 6-7) using distances estimated in
          the current iteration and cycle weights exp(-beta (r_ik + r_jk));
-       - h = (1 - lambda_t) r + lambda_t s, w = exp(-4 h) / (h + delta).
+       - h = (1 - lambda_t) r + lambda_t s, w = exp(-4 h) / (h + delta), with h
+         clipped to [1e-8, 10] as in the authors' release.
 
 Everything is vectorised over edges and 3-cycles.
 
-Two legacy switches reproduce the pre-hardening implementation for comparison
+Parameters the paper does not state are taken from the authors' released code
+(github.com/sli743/Cycle-Sync): the T-AAB temperatures tau = 2, 4, 8, 16, 20
+on radian-scale scores and the clipping of h. The paper's own definitions are
+kept where the release departs from them: the arc distance of Sec. 2.2 is the
+exact geodesic distance, and Eq. 6 averages over every 3-cycle of an edge
+rather than a random sample of them.
+
+Legacy switches reproduce the pre-hardening implementation for comparison
 only: ``wls="alternating"`` (at most 20 alternating alpha / location sweeps,
-restarted from alpha = 1 at every outer iteration) and ``softmin="legacy"``
+restarted from alpha = 1 at every outer iteration), ``softmin="legacy"``
 (falls back to an unweighted cycle mean when the unnormalised Eq. 6 weights
-underflow below 1e-12).
+underflow below 1e-12), ``taab_temps="gym"`` (the earlier, invented T-AAB
+temperatures 1, 1.4, ..., 1.4^4 on pi-normalised scores) and
+``weight_clip="weight"`` (clip the weights to [1e-8, 1e8] instead of h).
 """
 
 from __future__ import annotations
@@ -33,6 +44,16 @@ from scipy import linalg as sla
 
 WEIGHT_MIN = 1e-8
 WEIGHT_MAX = 1e8
+SCORE_MIN = 1e-8
+SCORE_MAX = 10.0
+
+# T-AAB reweighting temperatures applied to pi-normalised scores. The authors'
+# release uses tau = min(2^k, 20), k = 1..5, on scores in radians, i.e.
+# pi * tau here.
+TAAB_TEMPERATURES = {
+    "authors": tuple(float(np.pi * min(2.0 ** (k + 1), 20.0)) for k in range(5)),
+    "gym": tuple(1.4**k for k in range(5)),
+}
 
 SCHEDULES = {
     "t_over_t_plus_10": lambda t: t / (t + 10.0),
@@ -168,14 +189,17 @@ def aab_inconsistencies(graph: Graph, min_sin: float = 0.6) -> tuple[np.ndarray,
     return ok, d[ok]
 
 
-def truncated_aab_scores(
-    graph: Graph,
-    iterations: int = 5,
-    beta0: float = 1.0,
-    beta_growth: float = 1.4,
-) -> np.ndarray:
-    """T-AAB estimate of the angular corruption level of every edge."""
+def truncated_aab_scores(graph: Graph, temperatures: str = "authors") -> np.ndarray:
+    """T-AAB estimate of the angular corruption level of every edge (in [0, 1]).
 
+    Starts from the plain mean of the well-shaped cycle inconsistencies and
+    then re-averages them with cycle weights exp(-beta (s_ik + s_jk)) for each
+    temperature beta in ``TAAB_TEMPERATURES[temperatures]``. Edges without a
+    well-shaped 3-cycle keep the score 1.
+    """
+
+    if temperatures not in TAAB_TEMPERATURES:
+        raise ValueError(f"temperatures must be one of {sorted(TAAB_TEMPERATURES)}")
     ok, d = aab_inconsistencies(graph)
     te = graph.t_edge[ok]
     e_ik = graph.t_ik[ok]
@@ -185,17 +209,22 @@ def truncated_aab_scores(
     has = cnt > 0
     scores = np.ones(m, dtype=float)
     scores[has] = np.bincount(te, weights=d, minlength=m)[has] / cnt[has]
-    beta = beta0
-    for _ in range(iterations):
-        w = np.exp(-beta * (scores[e_ik] + scores[e_jk]))
-        num = np.bincount(te, weights=w * d, minlength=m)
-        den = np.bincount(te, weights=w, minlength=m)
-        upd = has & (den > 1e-12)
-        new_scores = scores.copy()
-        new_scores[upd] = num[upd] / den[upd]
-        scores = new_scores
-        beta *= beta_growth
+    for beta in TAAB_TEMPERATURES[temperatures]:
+        new_scores = _segment_weighted_mean(te, m, scores[e_ik] + scores[e_jk], d, beta)
+        scores = np.where(has, new_scores, scores)
     return scores
+
+
+def welsch_weights(h: np.ndarray, delta: float = 1e-8, clip: str = "score") -> np.ndarray:
+    """w = exp(-4 h) / (h + delta); ``clip="score"`` clips h to [1e-8, 10] first
+    (authors' release), ``clip="weight"`` clips w to [1e-8, 1e8] (legacy)."""
+
+    if clip == "score":
+        hh = np.clip(h, SCORE_MIN, SCORE_MAX)
+        return np.exp(-4.0 * hh) / (hh + delta)
+    if clip == "weight":
+        return np.clip(np.exp(-4.0 * h) / (h + delta), WEIGHT_MIN, WEIGHT_MAX)
+    raise ValueError("clip must be 'score' or 'weight'")
 
 
 def _scatter_edges(I: np.ndarray, J: np.ndarray, vec: np.ndarray, n: int) -> np.ndarray:
@@ -395,6 +424,8 @@ def cycle_sync(
     lambda_schedule: str = "t_over_t_plus_10",
     wls: str = "exact",
     softmin: str = "stable",
+    taab_temps: str = "authors",
+    weight_clip: str = "score",
 ) -> dict[str, np.ndarray]:
     """Run Algorithm 1 with the paper's schedule (or an ablation schedule)."""
 
@@ -407,7 +438,7 @@ def cycle_sync(
     if init == "uniform":
         corruption = np.zeros(graph.m, dtype=float)
     elif init == "t-aab":
-        corruption = truncated_aab_scores(graph)
+        corruption = truncated_aab_scores(graph, temperatures=taab_temps)
     else:
         raise ValueError("init must be 't-aab' or 'uniform'")
 
@@ -423,7 +454,7 @@ def cycle_sync(
         s_cycle = cycle_scores(graph, locations, residuals, beta=beta, legacy=(softmin == "legacy"))
         lam = schedule(t)
         h = (1.0 - lam) * residuals + lam * s_cycle
-        weights = np.clip(np.exp(-4.0 * h) / (h + delta), WEIGHT_MIN, WEIGHT_MAX)
+        weights = welsch_weights(h, delta, clip=weight_clip)
         trace.append(float(np.median(residuals)))
     return {
         "locations": locations,
@@ -442,6 +473,7 @@ def residual_irls(
     t_max: int = 20,
     delta: float = 1e-8,
     wls: str = "exact",
+    weight_clip: str = "score",
 ) -> dict[str, np.ndarray]:
     """Welsch IRLS without cycle-consistency weighting (uniform start)."""
 
@@ -453,7 +485,7 @@ def residual_irls(
     trace = []
     for _ in range(t_max):
         locations, alpha, residuals = weighted_location_solve(n, edges, directions, weights, method=wls, t0=locations)
-        weights = np.clip(np.exp(-4.0 * residuals) / (residuals + delta), WEIGHT_MIN, WEIGHT_MAX)
+        weights = welsch_weights(residuals, delta, clip=weight_clip)
         trace.append(float(np.median(residuals)))
     return {
         "locations": locations,

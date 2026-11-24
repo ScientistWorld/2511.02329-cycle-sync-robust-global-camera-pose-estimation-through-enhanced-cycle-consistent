@@ -11,12 +11,12 @@ Each problem instance provides:
 - An undirected viewing graph over the cameras.
 - A unit direction vector for each graph edge.
 
-A solver must output one 3D location per camera. It must not use ground-truth locations, hidden corruption labels, inter-camera distances, image measurements, or any information not present in the benchmark artifact.
+A solver must output one 3D location per camera. It sees only these observations: no ground-truth locations, corruption labels, inter-camera distances or image measurements are available.
 
 ## Difficulty
 
-The benchmark stresses high outlier rates, noisy clean directions, missing graph edges, and variable inter-camera distances. Some outliers are independent random directions, while others are generated from an internally consistent but wrong camera configuration.
+The benchmark stresses high outlier rates, noisy clean directions, missing graph edges, and variable inter-camera distances. In one setting most directions are independent random outliers; in the other, almost half of the directions are outliers generated from an internally consistent but wrong camera configuration, which makes them hard to tell apart from the true structure. Even the clean directions carry angular noise.
 
 ## Success Criteria
 
-A successful solution has low aligned camera-location error across multiple trials, remains stable under severe corruption, and preserves the benchmark settings for camera count, graph density, noise level, corruption model, and corruption rate.
+A successful solution has low aligned camera-location error across many independent instances, in both the typical camera and the worst-placed cameras, and remains stable under severe corruption.

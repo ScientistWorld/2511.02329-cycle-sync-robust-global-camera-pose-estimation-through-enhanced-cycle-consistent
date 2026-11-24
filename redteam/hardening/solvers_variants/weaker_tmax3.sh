@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardening check solver "weaker_tmax3" (same interface as scripts/solvers/*.sh).
+# Hardening variant "weaker_tmax3": weaker: Cycle-Sync stopped after 3 iterations.
 set -e
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"

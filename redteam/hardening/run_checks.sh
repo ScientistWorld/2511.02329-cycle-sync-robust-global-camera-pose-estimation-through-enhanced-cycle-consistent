@@ -27,7 +27,7 @@ python eval/train/evaluate.py --solvers-dir redteam/hardening/solvers_variants \
 echo "variants train rc=$?"
 
 echo "=== shortcuts: hidden test (default output path) ==="
-rm -rf tmp/test_instances_backup
+
 SAVE="$(mktemp -d)"
 cp scoring/scores_test.json scoring/diagnostics_test.json "$SAVE"/
 # A forged score file placed before the run must not survive it.

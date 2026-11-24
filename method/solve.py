@@ -20,7 +20,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from method.cycle_sync import SCHEDULES, cycle_sync, residual_irls  # noqa: E402
+from method.cycle_sync import SCHEDULES, TAAB_TEMPERATURES, cycle_sync, residual_irls  # noqa: E402
 
 
 def main() -> None:
@@ -34,6 +34,8 @@ def main() -> None:
     parser.add_argument("--init", choices=["t-aab", "uniform"], default="t-aab")
     parser.add_argument("--wls", choices=["exact", "alternating"], default="exact")
     parser.add_argument("--softmin", choices=["stable", "legacy"], default="stable")
+    parser.add_argument("--taab-temps", choices=sorted(TAAB_TEMPERATURES), default="authors")
+    parser.add_argument("--weight-clip", choices=["score", "weight"], default="score")
     args = parser.parse_args()
 
     in_dir = Path(args.input_dir)
@@ -45,7 +47,7 @@ def main() -> None:
             edges = np.asarray(z["edges"], dtype=np.int64)
             directions = np.asarray(z["directions"], dtype=float)
         if args.algorithm == "irls":
-            result = residual_irls(n, edges, directions, t_max=args.t_max, wls=args.wls)
+            result = residual_irls(n, edges, directions, t_max=args.t_max, wls=args.wls, weight_clip=args.weight_clip)
         else:
             result = cycle_sync(
                 n,
@@ -57,6 +59,8 @@ def main() -> None:
                 lambda_schedule=args.schedule,
                 wls=args.wls,
                 softmin=args.softmin,
+                taab_temps=args.taab_temps,
+                weight_clip=args.weight_clip,
             )
         np.savez(out_dir / path.name, locations=np.asarray(result["locations"], dtype=float))
 

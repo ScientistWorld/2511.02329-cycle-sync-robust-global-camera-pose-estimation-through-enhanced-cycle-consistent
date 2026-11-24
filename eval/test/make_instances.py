@@ -8,7 +8,10 @@ kept unless --force is given (which replaces the hidden test, so every stored
 test score must then be regenerated).
 
 This file carries its own copy of the generator on purpose: the hidden test
-must not depend on code outside eval/test/.
+must not depend on code outside eval/test/. The corruption models are those of
+the authors' released code (noise = sigma x a uniformly random unit vector
+added to the unit direction; adversarial outliers are directions of an
+alternative camera cloud, and noise is added to every edge).
 """
 
 from __future__ import annotations
@@ -28,7 +31,7 @@ OUT_DIR = Path(__file__).resolve().parent / "instances"
 
 
 def _normalize(x: np.ndarray) -> np.ndarray:
-    return x / np.maximum(np.linalg.norm(x, axis=-1, keepdims=True), 1e-12)
+    return x / np.maximum(np.linalg.norm(x, axis=-1, keepdims=True), 1e-15)
 
 
 def generate(n: int, p: float, q: float, sigma: float, corruption: str, rng: np.random.Generator):
@@ -36,15 +39,16 @@ def generate(n: int, p: float, q: float, sigma: float, corruption: str, rng: np.
     alt_locations = rng.normal(size=(n, 3))
     mask = rng.random((n, n)) < p
     ii, jj = np.where(np.triu(mask, 1))
-    clean = locations[ii] - locations[jj]
-    clean_noisy = clean + sigma * rng.normal(size=clean.shape)
+    true_dir = _normalize(locations[ii] - locations[jj])
     bad = rng.random(len(ii)) < q
+    noise = _normalize(rng.normal(size=true_dir.shape))
     if corruption == "uniform":
-        corrupted_vecs = rng.normal(size=clean.shape)
+        observed = true_dir + sigma * noise
+        observed[bad] = noise[bad]
     else:
-        corrupted_vecs = alt_locations[ii] - alt_locations[jj] + sigma * rng.normal(size=clean.shape)
-    observed = clean_noisy.copy()
-    observed[bad] = corrupted_vecs[bad]
+        observed = true_dir.copy()
+        observed[bad] = _normalize(alt_locations[ii] - alt_locations[jj])[bad]
+        observed = observed + sigma * noise
     edges = np.stack([ii, jj], axis=1).astype(np.int32)
     return locations, edges, _normalize(observed), bad
 

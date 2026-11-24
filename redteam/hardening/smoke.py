@@ -3,7 +3,8 @@
 1. The exact WLS solver reaches an objective no higher than a long run of the
    alternating solver, and its gradient vanishes (KKT), on one instance and
    two weight vectors (uniform and T-AAB initial weights).
-2. The registered cycle_sync and welsch_irls solvers run through the solver
+2. The registered cycle_sync, cycle_sync_residual_only, welsch_irls and lud
+   solvers run through the solver
    interface on one public instance; prints timing and errors.
 Exits non-zero on failure so the job stops early.
 """
@@ -82,8 +83,8 @@ def main() -> None:
     kkt_check(prob, np.exp(-20.0 * truncated_aab_scores(graph)), "T-AAB weights")
     for exp in ("uniform_high_noise", "adversarial_high_noise"):
         p = generate_experiment(exp, seed=11)
-        run_solver("cycle_sync", p, exp)
-        run_solver("welsch_irls", p, exp)
+        for name in ("cycle_sync", "cycle_sync_residual_only", "welsch_irls", "lud"):
+            run_solver(name, p, exp)
 
 
 if __name__ == "__main__":
