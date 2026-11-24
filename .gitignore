@@ -236,3 +236,7 @@ core.[0-9]*
 
 # Auto-added by swarm
 data/downloads/
+
+# Fixed benchmark instances are agent-authored data and ship with the gym.
+!data/instances/train/*.npz
+!eval/test/instances/*.npz

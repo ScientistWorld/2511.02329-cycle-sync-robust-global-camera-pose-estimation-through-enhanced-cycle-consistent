@@ -1,31 +1,73 @@
-"""Evaluate the held-out test slice of saved camera-location estimates."""
+"""Hidden-test evaluator for camera-location recovery.
+
+Runs every registered solver (``scripts/solvers/<method>.sh``) on the hidden
+test instances held only in ``eval/test/instances/`` and writes
+``scoring/scores_test.json``.
+
+Protocol
+  * The instance files (inputs + ground truth) are read into memory, then
+    removed from disk while any solver runs, and written back afterwards.
+  * Each solver is called once per experiment as
+        bash scripts/solvers/<method>.sh <input_dir> <output_dir>
+    with a fresh temporary ``input_dir`` holding one ``inst_XXX.npz`` per
+    instance (``n``, ``edges``, ``directions``, ``experiment``) and must write
+    ``<output_dir>/inst_XXX.npz`` with ``locations`` (n x 3).
+  * Every scored number is recomputed here from those raw locations: L1
+    similarity alignment to the ground truth (the paper's gauge), then the
+    median, mean and 90th-percentile per-camera error of each instance,
+    averaged over the experiment's instances.
+  * Fail closed: a non-zero solver exit, a missing / unreadable / wrongly
+    shaped / non-finite output, or a missing solver for a required method
+    scores the affected instances at their worst value: the error of the
+    uninformative output that puts every camera at one point. Valid outputs
+    are capped at that same value, so nothing scores below a failure.
+    ``scoring/scores_test.json`` is deleted at the start, immediately rewritten
+    with worst values for every method, and updated after each solver run.
+  * The experiment list, metric list, required method and test size are fixed
+    by this file; nothing is read from scoring/ or from method outputs other
+    than ``locations``.
+
+Run with no arguments to score every method on disk.
+"""
 
 from __future__ import annotations
 
 import argparse
-import hashlib
+import io
 import json
+import os
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
 from pathlib import Path
 
 import numpy as np
 
+ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parent
+INSTANCE_DIR = HERE / "instances"
+DEFAULT_SOLVERS = ROOT / "scripts" / "solvers"
+DEFAULT_OUT = ROOT / "scoring" / "scores_test.json"
+DEFAULT_DIAG = ROOT / "scoring" / "diagnostics_test.json"
 
-SLICE_NAME = "test"
-DEFAULT_OUTPUT = "scoring/scores_test.json"
-DEFAULT_DIAGNOSTICS = "scoring/diagnostics_test.json"
-DEFAULT_TRAIN_SCORES = "scoring/scores_train.json"
-DEFAULT_ALIAS = {"irls": "welsch_irls"}
-EXPECTED_CONFIGS = {
-    "uniform_high_noise": {"n": 100, "p": 0.5, "q": 0.7, "sigma": 0.2, "corruption": "uniform"},
-    "adversarial_high_noise": {"n": 100, "p": 0.5, "q": 0.45, "sigma": 0.2, "corruption": "adversarial"},
-}
+EXPERIMENTS = ("uniform_high_noise", "adversarial_high_noise")
+METRICS = ("median_location_error", "mean_location_error", "p90_location_error")
+REQUIRED_METHODS = ("cycle_sync",)
+EXPECTED_COUNT = 40
+METHOD_NAME = re.compile(r"^[A-Za-z0-9_.\-]+$")
+
+
+# ---------------------------------------------------------------- metrics
 
 
 def geometric_median(points: np.ndarray, max_iters: int = 100, tol: float = 1e-8) -> np.ndarray:
-    y = np.median(np.asarray(points, dtype=float), axis=0)
+    y = np.median(points, axis=0)
     for _ in range(max_iters):
-        diff = points - y
-        dist = np.linalg.norm(diff, axis=1)
+        dist = np.linalg.norm(points - y, axis=1)
         if np.any(dist < tol):
             return points[int(np.argmin(dist))].copy()
         weights = 1.0 / np.maximum(dist, tol)
@@ -37,6 +79,8 @@ def geometric_median(points: np.ndarray, max_iters: int = 100, tol: float = 1e-8
 
 
 def l1_similarity_align(reference: np.ndarray, estimate: np.ndarray) -> np.ndarray:
+    """argmin over scalar c and translation t of sum_i ||t*_i - (c est_i + t)||."""
+
     ref = np.asarray(reference, dtype=float)
     est = np.asarray(estimate, dtype=float)
     x = est - est.mean(axis=0)
@@ -44,239 +88,251 @@ def l1_similarity_align(reference: np.ndarray, estimate: np.ndarray) -> np.ndarr
     denom = float(np.sum(x * x))
     scale = 1.0 if denom <= 1e-12 else float(np.sum(x * y) / denom)
     translation = geometric_median(ref - scale * est)
-
     for _ in range(100):
-        residual = ref - (scale * est + translation)
-        dist = np.linalg.norm(residual, axis=1)
+        dist = np.linalg.norm(ref - (scale * est + translation), axis=1)
         weights = 1.0 / np.maximum(dist, 1e-8)
         denom = float(np.sum(weights * np.sum(est * est, axis=1)))
         if denom <= 1e-12:
             break
         next_scale = float(np.sum(weights * np.sum(est * (ref - translation), axis=1)) / denom)
         next_translation = geometric_median(ref - next_scale * est)
-        if abs(next_scale - scale) < 1e-8 and np.linalg.norm(next_translation - translation) < 1e-8:
-            scale = next_scale
-            translation = next_translation
+        converged = abs(next_scale - scale) < 1e-8 and np.linalg.norm(next_translation - translation) < 1e-8
+        scale, translation = next_scale, next_translation
+        if converged:
             break
-        scale = next_scale
-        translation = next_translation
     return scale * est + translation
 
 
-def location_errors(reference: np.ndarray, estimate: np.ndarray) -> np.ndarray:
-    aligned = l1_similarity_align(reference, estimate)
-    return np.linalg.norm(np.asarray(reference) - aligned, axis=1)
+def normalise_estimate(est: np.ndarray) -> np.ndarray:
+    """Remove translation and scale (the metric is invariant to both) to avoid overflow."""
+
+    peak = float(np.max(np.abs(est))) if est.size else 0.0
+    if peak > 0.0 and np.isfinite(peak):
+        est = est / peak
+    return est - est.mean(axis=0)
 
 
-def scalar_string(value: object) -> str:
-    if isinstance(value, np.ndarray):
-        return str(value.item())
-    return str(value)
+def instance_metrics(truth: np.ndarray, est: np.ndarray) -> np.ndarray:
+    errors = np.linalg.norm(truth - l1_similarity_align(truth, est), axis=1)
+    return np.array([np.median(errors), np.mean(errors), np.percentile(errors, 90)], dtype=float)
 
 
-def scalar_float(value: object) -> float:
-    if isinstance(value, np.ndarray):
-        return float(value.item())
-    return float(value)
+# ---------------------------------------------------------------- instances
 
 
-def benchmark_instance_valid(exp_name: str, artifact: object) -> float:
-    expected = EXPECTED_CONFIGS.get(exp_name)
-    if expected is None:
-        return 1.0
-    empirical_q = float(np.mean(artifact["corrupted"]))
-    return float(
-        int(scalar_float(artifact["n"])) == expected["n"]
-        and abs(scalar_float(artifact["p"]) - expected["p"]) <= 1e-12
-        and abs(scalar_float(artifact["q"]) - expected["q"]) <= 1e-12
-        and abs(scalar_float(artifact["sigma"]) - expected["sigma"]) <= 1e-12
-        and scalar_string(artifact["corruption"]) == expected["corruption"]
-        and abs(empirical_q - expected["q"]) <= 0.10
-    )
+def load_instances() -> tuple[dict[str, list[dict]], dict[Path, bytes]]:
+    data: dict[str, list[dict]] = {}
+    raw: dict[Path, bytes] = {}
+    for exp in EXPERIMENTS:
+        path = INSTANCE_DIR / f"{exp}.npz"
+        if not path.is_file():
+            raise SystemExit(f"hidden test instances missing: {path}")
+        blob = path.read_bytes()
+        raw[path] = blob
+        insts = []
+        with np.load(io.BytesIO(blob), allow_pickle=False) as z:
+            count = int(z["count"])
+            if count != EXPECTED_COUNT:
+                raise SystemExit(f"{path.name}: expected {EXPECTED_COUNT} instances, found {count}")
+            for k in range(count):
+                insts.append(
+                    {
+                        "n": int(z[f"n_{k:03d}"]),
+                        "edges": np.asarray(z[f"edges_{k:03d}"], dtype=np.int64),
+                        "directions": np.asarray(z[f"directions_{k:03d}"], dtype=float),
+                        "truth": np.asarray(z[f"locations_{k:03d}"], dtype=float),
+                    }
+                )
+        for inst in insts:
+            inst["worst"] = instance_metrics(inst["truth"], np.zeros_like(inst["truth"]))
+        data[exp] = insts
+    return data, raw
 
 
-def exact_recovery_rate(errors: list[float], threshold: float = 1e-4) -> float:
-    if not errors:
-        return 0.0
-    return float(np.mean(np.asarray(errors) < threshold))
+def _exit_on_signal(signum, _frame):
+    raise SystemExit(128 + signum)
 
 
-def declared_metrics(reference_path: Path) -> dict[str, set[str]]:
-    if not reference_path.exists():
-        return {}
-    reference = json.loads(reference_path.read_text())
-    return {
-        exp_name: set(exp.get("metrics", {}))
-        for exp_name, exp in reference.get("experiments", {}).items()
-    }
+class HiddenFiles:
+    """Remove the instance files from disk for the duration of the block."""
+
+    def __init__(self, raw: dict[Path, bytes]):
+        self.raw = raw
+
+    def _restore(self) -> None:
+        for path, blob in self.raw.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(blob)
+
+    def __enter__(self):
+        self._old_term = signal.getsignal(signal.SIGTERM)
+        signal.signal(signal.SIGTERM, _exit_on_signal)
+        try:
+            for path in self.raw:
+                path.unlink()
+        except BaseException:
+            self._restore()
+            signal.signal(signal.SIGTERM, self._old_term)
+            raise
+        return self
+
+    def __exit__(self, *exc):
+        self._restore()
+        signal.signal(signal.SIGTERM, self._old_term)
+        return False
 
 
-def required_methods_by_experiment(train_scores_path: Path) -> dict[str, set[str]]:
-    if not train_scores_path.exists():
-        return {}
-    train_scores = json.loads(train_scores_path.read_text())
-    return {
-        exp_name: set(experiment.get("results", {}))
-        for exp_name, experiment in train_scores.get("experiments", {}).items()
-    }
+# ---------------------------------------------------------------- solvers
 
 
-def split_files(exp_name: str, files: list[str]) -> list[str]:
-    keyed = []
-    for file_name in files:
-        key = f"{exp_name}:{Path(file_name).name}"
-        digest = hashlib.sha256(key.encode("utf-8")).hexdigest()
-        keyed.append((digest, file_name))
-    ordered = [file_name for _, file_name in sorted(keyed)]
-    cutoff = (len(ordered) + 1) // 2
-    return ordered[cutoff:]
+def discover_methods(solvers_dir: Path, only: list[str] | None, required: tuple[str, ...]) -> dict[str, Path | None]:
+    found = {p.stem: p for p in sorted(solvers_dir.glob("*.sh")) if METHOD_NAME.match(p.stem)}
+    if only:
+        found = {k: v for k, v in found.items() if k in only}
+    methods: dict[str, Path | None] = dict(found)
+    for name in required:
+        methods.setdefault(name, None)
+    return dict(sorted(methods.items()))
 
 
-def discover_manifests(args: argparse.Namespace) -> dict[str, Path]:
-    manifests: dict[str, Path] = {}
-    for manifest_path in sorted(Path("outputs").glob("*/manifest.json")):
-        method_dir = manifest_path.parent.name
-        method_name = DEFAULT_ALIAS.get(method_dir, method_dir)
-        manifests[method_name] = manifest_path
-
-    explicit_defaults = {
-        "cycle_sync": args.cycle_sync,
-        "welsch_irls": args.irls,
-    }
-    for method_name, manifest_name in explicit_defaults.items():
-        if manifest_name:
-            manifests[method_name] = Path(manifest_name)
-
-    for item in args.manifest:
-        if "=" not in item:
-            raise SystemExit("--manifest entries must have the form METHOD=path/to/manifest.json")
-        method_name, manifest_name = item.split("=", 1)
-        manifests[method_name] = Path(manifest_name)
-
-    required_by_exp = required_methods_by_experiment(Path(args.train_scores))
-    train_methods = set().union(*required_by_exp.values()) if required_by_exp else set()
-    if not train_methods:
-        return manifests
-    missing = sorted(method for method in train_methods if method not in manifests)
-    if missing:
-        raise SystemExit(
-            "scores_train.json contains methods without matching manifests: "
-            + ", ".join(missing)
-        )
-    return {method_name: manifests[method_name] for method_name in sorted(train_methods)}
+def run_solver(script: Path, exp: str, insts: list[dict]) -> tuple[list[np.ndarray | None], int, float]:
+    work = Path(tempfile.mkdtemp(prefix="cs_eval_"))
+    try:
+        in_dir = work / "in"
+        out_dir = work / "out"
+        in_dir.mkdir()
+        out_dir.mkdir()
+        for k, inst in enumerate(insts):
+            np.savez(
+                in_dir / f"inst_{k:03d}.npz",
+                n=np.int64(inst["n"]),
+                edges=inst["edges"],
+                directions=inst["directions"],
+                experiment=np.str_(exp),
+            )
+        start = time.time()
+        proc = subprocess.run(["bash", str(script), str(in_dir), str(out_dir)], cwd=str(ROOT), stdout=sys.stderr)
+        elapsed = time.time() - start
+        estimates: list[np.ndarray | None] = []
+        for k, inst in enumerate(insts):
+            est = None
+            if proc.returncode == 0:
+                est = read_estimate(out_dir / f"inst_{k:03d}.npz", inst["n"])
+            estimates.append(est)
+        return estimates, proc.returncode, elapsed
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
 
 
-def evaluate_manifest(
-    manifest_path: Path,
-    metric_filter: dict[str, set[str]] | None = None,
-) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, object]]]:
-    manifest = json.loads(manifest_path.read_text())
-    scores: dict[str, dict[str, float]] = {}
-    diagnostics: dict[str, dict[str, object]] = {}
-    for exp_name, files in manifest.items():
-        if metric_filter and exp_name not in metric_filter:
-            continue
-        selected_files = split_files(exp_name, list(files))
-        if not selected_files:
-            continue
-        medians = []
-        means = []
-        p90s = []
-        edges = []
-        corruptions = []
-        valid_instances = []
-        for file_name in selected_files:
-            with np.load(file_name, allow_pickle=False) as z:
-                errors = location_errors(z["locations_true"], z["locations_est"])
-                medians.append(float(np.median(errors)))
-                means.append(float(np.mean(errors)))
-                p90s.append(float(np.percentile(errors, 90)))
-                edges.append(len(z["edges"]))
-                corruptions.append(float(np.mean(z["corrupted"])))
-                valid_instances.append(benchmark_instance_valid(exp_name, z))
+def read_estimate(path: Path, n: int) -> np.ndarray | None:
+    try:
+        with np.load(path, allow_pickle=False) as z:
+            arr = np.asarray(z["locations"])
+    except Exception:
+        return None
+    if arr.dtype.kind not in "fiu" or arr.shape != (n, 3):
+        return None
+    arr = arr.astype(float)
+    if not np.all(np.isfinite(arr)):
+        return None
+    return arr
 
-        all_scores = {
-            "median_location_error": float(np.mean(medians)),
-            "mean_location_error": float(np.mean(means)),
-            "p90_location_error": float(np.mean(p90s)),
-            "mean_corruption_fraction": float(np.mean(corruptions)),
-            "benchmark_instance_valid_rate": float(np.mean(valid_instances)),
-            "exact_recovery_rate": exact_recovery_rate(medians),
-        }
-        allowed = metric_filter.get(exp_name) if metric_filter else None
-        scores[exp_name] = {
-            key: value for key, value in all_scores.items() if allowed is None or key in allowed
-        }
-        diagnostics[exp_name] = {
-            "slice": SLICE_NAME,
-            "selected_files": selected_files,
-            "trial_median_location_errors": [float(x) for x in medians],
-            "trial_mean_location_errors": [float(x) for x in means],
-            "trial_p90_location_errors": [float(x) for x in p90s],
-            "std_median_location_error": float(np.std(medians)),
-            "exact_recovery_rate": exact_recovery_rate(medians),
-            "benchmark_instance_valid_rate": float(np.mean(valid_instances)),
-            "mean_num_edges": float(np.mean(edges)),
-            "num_trials": float(len(medians)),
-        }
-    return scores, diagnostics
+
+def score_instances(insts: list[dict], estimates: list[np.ndarray | None]) -> tuple[np.ndarray, np.ndarray]:
+    values = np.empty((len(insts), len(METRICS)))
+    failed = np.zeros(len(insts), dtype=bool)
+    for k, (inst, est) in enumerate(zip(insts, estimates)):
+        vals = None
+        if est is not None:
+            try:
+                with np.errstate(all="ignore"):
+                    vals = instance_metrics(inst["truth"], normalise_estimate(est))
+            except Exception:
+                vals = None
+            if vals is not None and not np.all(np.isfinite(vals)):
+                vals = None
+        if vals is None:
+            failed[k] = True
+            vals = inst["worst"]
+        values[k] = np.minimum(vals, inst["worst"])
+    return values, failed
+
+
+# ---------------------------------------------------------------- output
+
+
+def write_json(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    os.replace(tmp, path)
+
+
+def scores_payload(table: dict[str, dict[str, np.ndarray]]) -> dict:
+    out: dict = {"experiments": {}}
+    for exp in EXPERIMENTS:
+        results = {}
+        for method, per_exp in table.items():
+            vals = per_exp[exp].mean(axis=0)
+            results[method] = {metric: float(v) for metric, v in zip(METRICS, vals)}
+        out["experiments"][exp] = {"results": results}
+    return out
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--cycle-sync", default=None)
-    parser.add_argument("--irls", default=None)
-    parser.add_argument(
-        "--manifest",
-        action="append",
-        default=[],
-        help="Additional METHOD=manifest.json artifact manifest to evaluate.",
-    )
-    parser.add_argument("--out", default=DEFAULT_OUTPUT)
-    parser.add_argument("--diagnostics-out", default=DEFAULT_DIAGNOSTICS)
-    parser.add_argument("--reference", default="scoring/reference.json")
-    parser.add_argument("--train-scores", default=DEFAULT_TRAIN_SCORES)
+    parser.add_argument("--solvers-dir", default=str(DEFAULT_SOLVERS))
+    parser.add_argument("--methods", nargs="*", default=None, help="restrict to these registered solvers")
+    parser.add_argument("--out", default=str(DEFAULT_OUT))
+    parser.add_argument("--diagnostics-out", default=str(DEFAULT_DIAG))
+    parser.add_argument("--per-instance-out", default=None)
     args = parser.parse_args()
 
-    metric_filter = declared_metrics(Path(args.reference))
-    required_by_exp = required_methods_by_experiment(Path(args.train_scores))
-    scores = {"experiments": {}}
-    diagnostics = {"experiments": {}}
-    for method_name, manifest_path in discover_manifests(args).items():
-        if not manifest_path.exists():
-            continue
-        method_results, method_diagnostics = evaluate_manifest(manifest_path, metric_filter)
-        for exp_name, metrics in method_results.items():
-            if required_by_exp and method_name not in required_by_exp.get(exp_name, set()):
-                continue
-            scores["experiments"].setdefault(exp_name, {"results": {}})
-            scores["experiments"][exp_name]["results"][method_name] = metrics
-        for exp_name, metrics in method_diagnostics.items():
-            if required_by_exp and method_name not in required_by_exp.get(exp_name, set()):
-                continue
-            diagnostics["experiments"].setdefault(exp_name, {"results": {}})
-            diagnostics["experiments"][exp_name]["results"][method_name] = metrics
-
-    if required_by_exp:
-        missing_by_exp = {}
-        for exp_name, expected_methods in required_by_exp.items():
-            actual_methods = set(scores["experiments"].get(exp_name, {}).get("results", {}))
-            missing = sorted(expected_methods - actual_methods)
-            if missing:
-                missing_by_exp[exp_name] = missing
-        if missing_by_exp:
-            details = "; ".join(
-                f"{exp_name}: {', '.join(methods)}"
-                for exp_name, methods in sorted(missing_by_exp.items())
-            )
-            raise SystemExit(f"test slice did not score all train methods: {details}")
-
     out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(scores, indent=2, sort_keys=True) + "\n")
-    diagnostics_out = Path(args.diagnostics_out)
-    diagnostics_out.parent.mkdir(parents=True, exist_ok=True)
-    diagnostics_out.write_text(json.dumps(diagnostics, indent=2, sort_keys=True) + "\n")
+    diag_out = Path(args.diagnostics_out)
+    for path in (out, diag_out):
+        path.unlink(missing_ok=True)
+
+    methods = discover_methods(Path(args.solvers_dir), args.methods, REQUIRED_METHODS)
+    data, raw = load_instances()
+
+    worst = {exp: np.stack([inst["worst"] for inst in data[exp]]) for exp in EXPERIMENTS}
+    table = {m: {exp: worst[exp].copy() for exp in EXPERIMENTS} for m in methods}
+    failed_table = {m: {exp: np.ones(len(data[exp]), dtype=bool) for exp in EXPERIMENTS} for m in methods}
+    diagnostics: dict = {"experiments": {exp: {"results": {}} for exp in EXPERIMENTS}}
+    write_json(out, scores_payload(table))
+
+    with HiddenFiles(raw):
+        for method, script in methods.items():
+            for exp in EXPERIMENTS:
+                info = {"num_instances": len(data[exp])}
+                if script is None:
+                    info.update({"returncode": None, "num_failed": len(data[exp]), "note": "no solver registered"})
+                else:
+                    print(f"[test] {method} / {exp}", file=sys.stderr, flush=True)
+                    estimates, rc, elapsed = run_solver(script, exp, data[exp])
+                    values, failed = score_instances(data[exp], estimates)
+                    table[method][exp] = values
+                    failed_table[method][exp] = failed
+                    info.update({"returncode": rc, "num_failed": int(failed.sum()), "solver_seconds": round(elapsed, 1)})
+                diagnostics["experiments"][exp]["results"][method] = info
+                write_json(out, scores_payload(table))
+
+    write_json(out, scores_payload(table))
+    write_json(diag_out, diagnostics)
+    if args.per_instance_out:
+        per_instance = {
+            method: {
+                exp: {
+                    **{metric: table[method][exp][:, j].tolist() for j, metric in enumerate(METRICS)},
+                    "failed": failed_table[method][exp].tolist(),
+                }
+                for exp in EXPERIMENTS
+            }
+            for method in methods
+        }
+        write_json(Path(args.per_instance_out), per_instance)
+    print(json.dumps(scores_payload(table), indent=2, sort_keys=True))
 
 
 if __name__ == "__main__":

@@ -1,8 +1,6 @@
 #!/bin/bash
-# Evaluate the visible train slice of saved method outputs.
-#
-# Mirrors scripts/evaluate.sh's manifest-based contract while writing
-# scoring/scores_train.json instead of scoring/scores.json.
+# Train-slice evaluation: run every registered solver (scripts/solvers/*.sh)
+# on the public train instances and write scoring/scores_train.json.
 
 set -e
 

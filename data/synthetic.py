@@ -1,12 +1,28 @@
-"""Synthetic camera-location data for Cycle-Sync experiments."""
+"""Synthetic camera-location data (the paper's Eqs. 9-10).
+
+Ground-truth camera locations are i.i.d. N(0, I_3); the viewing graph is
+Erdos-Renyi with edge probability p. Each edge (i, j), i < j, observes
+Normalize(t_i - t_j + sigma * eps) with probability 1 - q. With probability q
+it observes an outlier: Normalize(eps) under uniform corruption, or
+Normalize(t_i^c - t_j^c + sigma * eps) for an alternative camera cloud t^c
+under the cycle-consistent adversarial model.
+
+This module is public. Use it to generate as many development instances as
+you like; the benchmark's fixed instances are described in
+``briefing/evaluation.md``.
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-import json
 
 import numpy as np
+
+EXPERIMENTS = {
+    "uniform_high_noise": {"n": 100, "p": 0.5, "q": 0.7, "sigma": 0.2, "corruption": "uniform"},
+    "adversarial_high_noise": {"n": 100, "p": 0.5, "q": 0.45, "sigma": 0.2, "corruption": "adversarial"},
+}
 
 
 @dataclass(frozen=True)
@@ -16,7 +32,7 @@ class SyntheticProblem:
     q: float
     sigma: float
     corruption: str
-    seed: int
+    seed: object
     locations: np.ndarray
     edges: np.ndarray
     directions: np.ndarray
@@ -34,13 +50,9 @@ def generate_problem(
     q: float = 0.7,
     sigma: float = 0.2,
     corruption: str = "uniform",
-    seed: int = 0,
+    seed: object = 0,
 ) -> SyntheticProblem:
-    """Generate the paper's Erdos-Renyi synthetic camera-location model.
-
-    Clean directions follow Eq. (9). For ``corruption='adversarial'``,
-    corrupted directions follow Eq. (10) using an alternative camera cloud.
-    """
+    """Generate one instance; ``seed`` is anything ``np.random.default_rng`` accepts."""
 
     if corruption not in {"uniform", "adversarial"}:
         raise ValueError("corruption must be 'uniform' or 'adversarial'")
@@ -82,41 +94,44 @@ def generate_problem(
     )
 
 
-def save_problem(problem: SyntheticProblem, path: str | Path) -> None:
+def generate_experiment(name: str, seed: object) -> SyntheticProblem:
+    cfg = EXPERIMENTS[name]
+    return generate_problem(seed=seed, **cfg)
+
+
+def save_instance_set(path: str | Path, problems: list[SyntheticProblem]) -> None:
+    """Store a list of instances in one .npz (keys suffixed with _000, _001, ...)."""
+
+    arrays: dict[str, np.ndarray] = {"count": np.int64(len(problems))}
+    for k, prob in enumerate(problems):
+        arrays[f"n_{k:03d}"] = np.int64(prob.n)
+        arrays[f"edges_{k:03d}"] = prob.edges.astype(np.int32)
+        arrays[f"directions_{k:03d}"] = prob.directions.astype(np.float64)
+        arrays[f"locations_{k:03d}"] = prob.locations.astype(np.float64)
+        arrays[f"corrupted_{k:03d}"] = prob.corrupted.astype(bool)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(
-        path,
-        n=problem.n,
-        p=problem.p,
-        q=problem.q,
-        sigma=problem.sigma,
-        corruption=problem.corruption,
-        seed=problem.seed,
-        locations=problem.locations,
-        edges=problem.edges,
-        directions=problem.directions,
-        corrupted=problem.corrupted,
-    )
+    np.savez_compressed(path, **arrays)
 
 
-def load_problem(path: str | Path) -> SyntheticProblem:
+def load_instance_set(path: str | Path) -> list[dict[str, np.ndarray]]:
+    """Load a set written by ``save_instance_set``.
+
+    Each entry has ``n``, ``edges``, ``directions`` (the solver inputs) and, for
+    the public train set, ``locations`` (ground truth) and ``corrupted``.
+    """
+
+    out = []
     with np.load(path, allow_pickle=False) as z:
-        return SyntheticProblem(
-            n=int(z["n"]),
-            p=float(z["p"]),
-            q=float(z["q"]),
-            sigma=float(z["sigma"]),
-            corruption=str(z["corruption"]),
-            seed=int(z["seed"]),
-            locations=z["locations"],
-            edges=z["edges"],
-            directions=z["directions"],
-            corrupted=z["corrupted"],
-        )
-
-
-def write_manifest(problems: list[Path], path: str | Path) -> None:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps([str(p) for p in problems], indent=2) + "\n")
+        for k in range(int(z["count"])):
+            item = {
+                "n": int(z[f"n_{k:03d}"]),
+                "edges": np.asarray(z[f"edges_{k:03d}"], dtype=np.int64),
+                "directions": np.asarray(z[f"directions_{k:03d}"], dtype=float),
+            }
+            for key in ("locations", "corrupted"):
+                name = f"{key}_{k:03d}"
+                if name in z.files:
+                    item[key] = np.asarray(z[name])
+            out.append(item)
+    return out

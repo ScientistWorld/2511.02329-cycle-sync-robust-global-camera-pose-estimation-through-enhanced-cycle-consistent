@@ -1,26 +1,21 @@
 #!/bin/bash
-# Reproduce the paper's results end-to-end.
+# Reproduce the benchmark end to end.
 #
-# This script runs inside the compute container and calls
-# scripts/baseline.sh and scripts/method.sh to run baselines and
-# the paper's method. It scores once at the end so an interrupted
-# long run does not leave scoring/scores.json with a partial result.
-#
-# Assumes:
-#   - Container is built (environment/container.sif)
-#   - Data and models are downloaded (via scripts/download.sh)
-#   - Working directory is /home/user
-#
-# This is the "gold standard" reproduction — 
-# You do not need to run this, but keep this in good shape
-# so other agents can easily run a full loop of reproduction and get the paper's numbers.
+# The paper's method and baseline need no training: each is a solver
+# registered under scripts/solvers/ that the evaluators run on fixed instances.
+#   1. public train instances (data/instances/train/, regenerated if missing)
+#   2. train scoring  -> scoring/scores_train.json (copied to scoring/scores.json)
+#   3. hidden test scoring -> scoring/scores_test.json (only where eval/test/
+#      holds the hidden instances)
 
 set -e
 
 cd /home/user
 
-rm -rf outputs/cycle_sync outputs/cycle_sync_reverse outputs/cycle_sync_cycle_only outputs/cycle_sync_fast outputs/irls
-
-SKIP_EVALUATE=1 bash scripts/baseline.sh --n 100 --p 0.5 --trials 10 --t-max 20
-SKIP_EVALUATE=1 bash scripts/method.sh --n 100 --p 0.5 --trials 10 --t-max 20
-bash scripts/evaluate.sh
+python data/make_instances.py
+bash scripts/evaluate_train.sh
+cp scoring/scores_train.json scoring/scores.json
+cp scoring/diagnostics_train.json scoring/diagnostics.json
+if [ -f eval/test/instances/uniform_high_noise.npz ]; then
+    bash scripts/evaluate_test.sh
+fi

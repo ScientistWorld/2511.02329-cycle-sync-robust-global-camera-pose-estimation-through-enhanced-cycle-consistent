@@ -1,122 +1,94 @@
 {
   "experiments": {
     "uniform_high_noise": {
-      "description": "Synthetic Erdos-Renyi camera-location recovery under uniform random direction corruption with q=0.7 and sigma=0.2, matching Supplement Table 14.",
+      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under uniform random direction corruption with q=0.7 and sigma=0.2, the setting of Supplement Table 14. Scored on 40 fixed hidden instances; each registered solver is run by the evaluator on observations only.",
       "weight": 0.5,
       "primary_metric": "median_location_error",
       "metrics": {
         "median_location_error": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Headline translation recovery error after similarity-gauge alignment, averaged over selected trials."
+          "description": "Per-instance median camera error after L1 similarity alignment to ground truth (the paper's headline metric), averaged over instances; failed instances count at the error of the all-cameras-at-one-point output."
         },
         "mean_location_error": {
           "higher_is_better": false,
           "coefficient": -0.4,
-          "description": "Average per-camera translation error after alignment, catching methods that improve the median while leaving many cameras poor."
+          "description": "Per-instance mean camera error after alignment, averaged over instances; catches methods that improve the median while leaving many cameras poor."
         },
         "p90_location_error": {
           "higher_is_better": false,
           "coefficient": -0.6,
-          "description": "Ninetieth-percentile per-camera translation error after alignment, emphasizing tail failures under heavy corruption."
-        },
-        "mean_corruption_fraction": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Diagnostic-only empirical corruption fraction retained for compatibility with earlier score files."
-        },
-        "benchmark_instance_valid_rate": {
-          "higher_is_better": true,
-          "coefficient": 0.5,
-          "description": "Fraction of scored artifacts matching the benchmark's intended problem size, graph density, noise, and corruption setting."
+          "description": "Per-instance 90th-percentile camera error after alignment, averaged over instances; emphasises tail failures under heavy corruption."
         }
       },
       "results": {
         "cycle_sync": {
           "type": "proposed",
-          "median_location_error": 0.24,
-          "mean_corruption_fraction": 0.7
+          "median_location_error": 0.24
         },
         "welsch_irls": {
           "type": "baseline",
-          "median_location_error": 0.36,
-          "mean_corruption_fraction": 0.7
+          "median_location_error": 0.36
         },
         "cycle_sync_reverse": {
           "type": "proposed",
-          "median_location_error": 0.27,
-          "mean_corruption_fraction": 0.7
+          "median_location_error": 0.27
         },
         "cycle_sync_cycle_only": {
           "type": "proposed",
-          "median_location_error": 0.37,
-          "mean_corruption_fraction": 0.7
+          "median_location_error": 0.37
         },
         "cycle_sync_fast": {
           "type": "proposed",
-          "median_location_error": 0.29,
-          "mean_corruption_fraction": 0.7
+          "median_location_error": 0.29
         }
-      }
+      },
+      "_note": "results hold the paper's Supplement Table 14 median errors (10 trials, the authors' implementation). The paper reports only the median; mean and p90 are this gym's additional scored metrics."
     },
     "adversarial_high_noise": {
-      "description": "Synthetic Erdos-Renyi camera-location recovery under cycle-consistent adversarial direction corruption with q=0.45 and sigma=0.2, matching Supplement Table 15.",
+      "description": "Synthetic Erdos-Renyi camera-location recovery (n=100, p=0.5) under cycle-consistent adversarial direction corruption with q=0.45 and sigma=0.2, the setting of Supplement Table 15. Scored on 40 fixed hidden instances; each registered solver is run by the evaluator on observations only.",
       "weight": 0.5,
       "primary_metric": "median_location_error",
       "metrics": {
         "median_location_error": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Headline translation recovery error after similarity-gauge alignment, averaged over selected trials."
+          "description": "Per-instance median camera error after L1 similarity alignment to ground truth (the paper's headline metric), averaged over instances; failed instances count at the error of the all-cameras-at-one-point output."
         },
         "mean_location_error": {
           "higher_is_better": false,
           "coefficient": -0.4,
-          "description": "Average per-camera translation error after alignment, catching methods that improve the median while leaving many cameras poor."
+          "description": "Per-instance mean camera error after alignment, averaged over instances; catches methods that improve the median while leaving many cameras poor."
         },
         "p90_location_error": {
           "higher_is_better": false,
           "coefficient": -0.6,
-          "description": "Ninetieth-percentile per-camera translation error after alignment, emphasizing tail failures under adversarial corruption."
-        },
-        "mean_corruption_fraction": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Diagnostic-only empirical corruption fraction retained for compatibility with earlier score files."
-        },
-        "benchmark_instance_valid_rate": {
-          "higher_is_better": true,
-          "coefficient": 0.5,
-          "description": "Fraction of scored artifacts matching the benchmark's intended problem size, graph density, noise, and corruption setting."
+          "description": "Per-instance 90th-percentile camera error after alignment, averaged over instances; emphasises tail failures under heavy corruption."
         }
       },
       "results": {
         "cycle_sync": {
           "type": "proposed",
-          "median_location_error": 0.17,
-          "mean_corruption_fraction": 0.45
+          "median_location_error": 0.17
         },
         "welsch_irls": {
           "type": "baseline",
-          "median_location_error": 0.32,
-          "mean_corruption_fraction": 0.45
+          "median_location_error": 0.32
         },
         "cycle_sync_reverse": {
           "type": "proposed",
-          "median_location_error": 0.18,
-          "mean_corruption_fraction": 0.45
+          "median_location_error": 0.18
         },
         "cycle_sync_cycle_only": {
           "type": "proposed",
-          "median_location_error": 0.20,
-          "mean_corruption_fraction": 0.45
+          "median_location_error": 0.2
         },
         "cycle_sync_fast": {
           "type": "proposed",
-          "median_location_error": 0.17,
-          "mean_corruption_fraction": 0.45
+          "median_location_error": 0.17
         }
-      }
+      },
+      "_note": "results hold the paper's Supplement Table 15 median errors (10 trials, the authors' implementation). The paper reports only the median; mean and p90 are this gym's additional scored metrics."
     }
   }
 }
