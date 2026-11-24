@@ -1,8 +1,5 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: ""
+notes: "Exploration (CPU, ~10 min): data model (paper Eq.9-10 vs authors' released generator), T-AAB settings, lambda=0/LUD/LS baselines, headroom variants on public seeds"
