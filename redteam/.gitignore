@@ -1,0 +1,6 @@
+# Sandbox workspaces (copies of eval/ plus generated artifacts); each run's
+# scores are copied out of them into its own folder.
+ws/
+ws_*/
+__pycache__/
+done
