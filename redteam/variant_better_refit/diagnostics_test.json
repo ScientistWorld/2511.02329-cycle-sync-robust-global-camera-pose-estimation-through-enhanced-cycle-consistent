@@ -1,0 +1,588 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.0051098150791485325,
+          "trial_mean_location_errors": [
+            0.2599215920068509,
+            0.21433820845318383,
+            0.2488828261384205,
+            0.23121262405754744,
+            0.18923585187236447
+          ],
+          "trial_median_location_errors": [
+            0.12207794962377595,
+            0.11858329863647583,
+            0.11914167917917345,
+            0.13234764903215956,
+            0.12618687204276305
+          ],
+          "trial_p90_location_errors": [
+            0.26706133502989104,
+            0.2221339993301969,
+            0.24383279108129602,
+            0.28270648596731995,
+            0.26472003213305384
+          ]
+        },
+        "cycle_sync_cycle_only": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.015192515766887793,
+          "trial_mean_location_errors": [
+            0.36172214877068604,
+            0.27387919932522925,
+            0.2862467171978176,
+            0.25887394780282225,
+            0.4049902618298466
+          ],
+          "trial_median_location_errors": [
+            0.19553228161119796,
+            0.1709034987733682,
+            0.1506327474534115,
+            0.16207859295283622,
+            0.17870947963893521
+          ],
+          "trial_p90_location_errors": [
+            0.4079761272680158,
+            0.3934809304653355,
+            0.336310884611464,
+            0.45561019052969987,
+            0.6171103067365905
+          ]
+        },
+        "cycle_sync_fast": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006452967777236855,
+          "trial_mean_location_errors": [
+            0.2854706642044279,
+            0.22425613168127348,
+            0.26714536128931304,
+            0.20845732035423872,
+            0.24658362252519506
+          ],
+          "trial_median_location_errors": [
+            0.1305513230211604,
+            0.13531271312162257,
+            0.1258146886606442,
+            0.13672555290102678,
+            0.11913075880986815
+          ],
+          "trial_p90_location_errors": [
+            0.3184860076829784,
+            0.22918759599632194,
+            0.24525383094597042,
+            0.2800765842023208,
+            0.25227984184447066
+          ]
+        },
+        "cycle_sync_refit_r050": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r050/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_refit_r050/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_refit_r050/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r050/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_refit_r050/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.008358217179224059,
+          "trial_mean_location_errors": [
+            0.26228050365621386,
+            0.2531843065408676,
+            0.2435693483773334,
+            0.2330253884889729,
+            0.18361559518059242
+          ],
+          "trial_median_location_errors": [
+            0.14466322450276434,
+            0.14494284402594193,
+            0.1319668664297789,
+            0.13873038447049862,
+            0.12286386293134506
+          ],
+          "trial_p90_location_errors": [
+            0.26579804985688804,
+            0.31826953647477335,
+            0.2409919684179834,
+            0.2782540730971648,
+            0.26285086435302085
+          ]
+        },
+        "cycle_sync_refit_r075": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r075/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_refit_r075/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_refit_r075/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r075/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_refit_r075/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.0075678171192072085,
+          "trial_mean_location_errors": [
+            0.2570434393758472,
+            0.22056651913703412,
+            0.24586329259471784,
+            0.2256734976097277,
+            0.18100419336682902
+          ],
+          "trial_median_location_errors": [
+            0.1393711086610422,
+            0.11880810984842174,
+            0.12500397721035636,
+            0.13671065984144054,
+            0.12794466668350718
+          ],
+          "trial_p90_location_errors": [
+            0.24945448119863511,
+            0.24285804795442156,
+            0.2347573942709131,
+            0.2825459070189522,
+            0.2597547772038537
+          ]
+        },
+        "cycle_sync_refit_r100": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r100/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_refit_r100/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_refit_r100/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r100/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_refit_r100/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.009493814627130916,
+          "trial_mean_location_errors": [
+            0.22936384103803442,
+            0.20290397686663605,
+            0.2604460296306498,
+            0.22206792207695905,
+            0.17459182928670958
+          ],
+          "trial_median_location_errors": [
+            0.10721932875127274,
+            0.10864795514181498,
+            0.13286320363871829,
+            0.1206998304881945,
+            0.11230462559570413
+          ],
+          "trial_p90_location_errors": [
+            0.26828634683407343,
+            0.18111547431853875,
+            0.2540874517564286,
+            0.2603435141501215,
+            0.20896928774763882
+          ]
+        },
+        "cycle_sync_reverse": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.0027114028464600625,
+          "trial_mean_location_errors": [
+            0.30964960664281244,
+            0.2184517170450153,
+            0.2518620867502981,
+            0.1904830786779553,
+            0.2680204279633994
+          ],
+          "trial_median_location_errors": [
+            0.1263497995763959,
+            0.12146582203600036,
+            0.12604031387342313,
+            0.12941595987393617,
+            0.1234358727586595
+          ],
+          "trial_p90_location_errors": [
+            0.31658607072070805,
+            0.23449826603065088,
+            0.24892691278784,
+            0.22717387068361863,
+            0.27030928534550264
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/adversarial_high_noise/trial_000.npz",
+            "outputs/irls/adversarial_high_noise/trial_001.npz",
+            "outputs/irls/adversarial_high_noise/trial_007.npz",
+            "outputs/irls/adversarial_high_noise/trial_004.npz",
+            "outputs/irls/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.02582927009121501,
+          "trial_mean_location_errors": [
+            0.4451689592521037,
+            0.35254679877620615,
+            0.3132572286479027,
+            0.3036217748788943,
+            0.4988235610956975
+          ],
+          "trial_median_location_errors": [
+            0.20779069338201683,
+            0.19274740195316165,
+            0.20961065139289412,
+            0.21444590042874526,
+            0.26812281359080437
+          ],
+          "trial_p90_location_errors": [
+            1.04271179908175,
+            0.5079672004472314,
+            0.4611416662396255,
+            0.5230219394415885,
+            1.376911589923716
+          ]
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.011256659886150143,
+          "trial_mean_location_errors": [
+            0.2170115395304593,
+            0.2896913761003639,
+            0.2368341527173123,
+            0.21883700881916185,
+            0.20770552851419594
+          ],
+          "trial_median_location_errors": [
+            0.2025001415453102,
+            0.2080482605579725,
+            0.18381792102637412,
+            0.19692359112518706,
+            0.17813177072489117
+          ],
+          "trial_p90_location_errors": [
+            0.33548532200423153,
+            0.4142308863612637,
+            0.36620542392785466,
+            0.39558623899743744,
+            0.37478541984503194
+          ]
+        },
+        "cycle_sync_cycle_only": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.01743144131419648,
+          "trial_mean_location_errors": [
+            0.2939153884259968,
+            0.4283021201309169,
+            0.3336696095769164,
+            0.30633556338735607,
+            0.3122032373437342
+          ],
+          "trial_median_location_errors": [
+            0.24014077657348792,
+            0.2786500997489477,
+            0.24115478615838895,
+            0.2420860146220392,
+            0.22649213840279275
+          ],
+          "trial_p90_location_errors": [
+            0.5287197249153531,
+            0.6606778123328608,
+            0.5470944160931759,
+            0.5895785425527346,
+            0.5775401212275596
+          ]
+        },
+        "cycle_sync_fast": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.013090415045479153,
+          "trial_mean_location_errors": [
+            0.22962420622032784,
+            0.31524381512156635,
+            0.27649315865040813,
+            0.2360883729977849,
+            0.21476287799919472
+          ],
+          "trial_median_location_errors": [
+            0.19745217779911706,
+            0.22314389224177267,
+            0.20317735549261368,
+            0.2062253657453259,
+            0.1827308972026354
+          ],
+          "trial_p90_location_errors": [
+            0.38586262492864004,
+            0.465600529189451,
+            0.4438409079320344,
+            0.47357353447519474,
+            0.41843658839747677
+          ]
+        },
+        "cycle_sync_refit_r050": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r050/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_refit_r050/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_refit_r050/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_refit_r050/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r050/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.014684112557265528,
+          "trial_mean_location_errors": [
+            0.201494531990186,
+            0.30945351788461245,
+            0.2599531677216935,
+            0.2221464657200833,
+            0.23224089060109407
+          ],
+          "trial_median_location_errors": [
+            0.184916401739639,
+            0.22599958235544954,
+            0.20344194022622283,
+            0.19334255257524136,
+            0.18901783609557485
+          ],
+          "trial_p90_location_errors": [
+            0.31173162975682134,
+            0.4759833564119466,
+            0.39432192287921586,
+            0.36344682415021584,
+            0.4179216585813635
+          ]
+        },
+        "cycle_sync_refit_r075": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r075/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_refit_r075/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_refit_r075/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_refit_r075/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r075/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006494107509139675,
+          "trial_mean_location_errors": [
+            0.2087365165687836,
+            0.2813515943177418,
+            0.2575402850960707,
+            0.20788011134728696,
+            0.22084401688606234
+          ],
+          "trial_median_location_errors": [
+            0.18686288787953526,
+            0.1797515294155298,
+            0.19396253280009385,
+            0.17851617173123477,
+            0.1762814497670918
+          ],
+          "trial_p90_location_errors": [
+            0.3391966189053902,
+            0.41201012697171646,
+            0.393415172274539,
+            0.375602800062454,
+            0.4023359213651803
+          ]
+        },
+        "cycle_sync_refit_r100": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_refit_r100/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_refit_r100/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_refit_r100/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_refit_r100/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_refit_r100/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.016336546389115542,
+          "trial_mean_location_errors": [
+            0.2109273537250263,
+            0.2840469707220052,
+            0.21765461449395118,
+            0.1849842545415898,
+            0.1899306866452208
+          ],
+          "trial_median_location_errors": [
+            0.19870476419413807,
+            0.20376447267544814,
+            0.18126834071619985,
+            0.1648482549930869,
+            0.1649851527440841
+          ],
+          "trial_p90_location_errors": [
+            0.3301763262930518,
+            0.39376600649843707,
+            0.36293447809550977,
+            0.3131583176898069,
+            0.33713918043950125
+          ]
+        },
+        "cycle_sync_reverse": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.007135215499923873,
+          "trial_mean_location_errors": [
+            0.20981425008895635,
+            0.28171310011520034,
+            0.25227568107183324,
+            0.21537147723559105,
+            0.2414732303295189
+          ],
+          "trial_median_location_errors": [
+            0.19280202999681942,
+            0.1996224399082564,
+            0.17963099480191158,
+            0.19536618018163987,
+            0.18557331126134546
+          ],
+          "trial_p90_location_errors": [
+            0.32258582759376275,
+            0.37068459488787564,
+            0.34823973553176224,
+            0.3901264295887123,
+            0.37371720686885795
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/uniform_high_noise/trial_008.npz",
+            "outputs/irls/uniform_high_noise/trial_003.npz",
+            "outputs/irls/uniform_high_noise/trial_009.npz",
+            "outputs/irls/uniform_high_noise/trial_007.npz",
+            "outputs/irls/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.01992999655157044,
+          "trial_mean_location_errors": [
+            0.3929187841701336,
+            0.4751056991671292,
+            0.41026042596271667,
+            0.421787918946262,
+            0.4507962348339658
+          ],
+          "trial_median_location_errors": [
+            0.3337744570320188,
+            0.3299520956072245,
+            0.32060497841873564,
+            0.33467615739504347,
+            0.3779946454514256
+          ],
+          "trial_p90_location_errors": [
+            0.7829082799208031,
+            0.9304737180019422,
+            0.77450429376752,
+            0.8550063444690896,
+            0.900738312608139
+          ]
+        }
+      }
+    }
+  }
+}

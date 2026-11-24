@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006272163684093533,
+          "trial_mean_location_errors": [
+            0.2618320045961123,
+            0.22952394939890983,
+            0.2626419134850828,
+            0.24140842831965442,
+            0.17242164390802114
+          ],
+          "trial_median_location_errors": [
+            0.12715182115567586,
+            0.13761828875084098,
+            0.12598644994047045,
+            0.13738135400244406,
+            0.12225483253028877
+          ],
+          "trial_p90_location_errors": [
+            0.2919005297325676,
+            0.25061889803430953,
+            0.24277171210372403,
+            0.30175056338878264,
+            0.21371880021481018
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/adversarial_high_noise/trial_000.npz",
+            "outputs/irls/adversarial_high_noise/trial_001.npz",
+            "outputs/irls/adversarial_high_noise/trial_007.npz",
+            "outputs/irls/adversarial_high_noise/trial_004.npz",
+            "outputs/irls/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.02582927009121501,
+          "trial_mean_location_errors": [
+            0.4451689592521037,
+            0.35254679877620615,
+            0.3132572286479027,
+            0.3036217748788943,
+            0.4988235610956975
+          ],
+          "trial_median_location_errors": [
+            0.20779069338201683,
+            0.19274740195316165,
+            0.20961065139289412,
+            0.21444590042874526,
+            0.26812281359080437
+          ],
+          "trial_p90_location_errors": [
+            1.04271179908175,
+            0.5079672004472314,
+            0.4611416662396255,
+            0.5230219394415885,
+            1.376911589923716
+          ]
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.02500711116325555,
+          "trial_mean_location_errors": [
+            0.23358037019789488,
+            0.3373875893074914,
+            0.2580100473025507,
+            0.23502958983221503,
+            0.2229038955107342
+          ],
+          "trial_median_location_errors": [
+            0.20026839165517235,
+            0.24942003836996135,
+            0.18220084942995993,
+            0.2133317991079023,
+            0.18170257391848782
+          ],
+          "trial_p90_location_errors": [
+            0.39363861037866354,
+            0.4634656979969565,
+            0.4111412246944315,
+            0.44445551254337934,
+            0.4279205342301822
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/uniform_high_noise/trial_008.npz",
+            "outputs/irls/uniform_high_noise/trial_003.npz",
+            "outputs/irls/uniform_high_noise/trial_009.npz",
+            "outputs/irls/uniform_high_noise/trial_007.npz",
+            "outputs/irls/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.01992999655157044,
+          "trial_mean_location_errors": [
+            0.3929187841701336,
+            0.4751056991671292,
+            0.41026042596271667,
+            0.421787918946262,
+            0.4507962348339658
+          ],
+          "trial_median_location_errors": [
+            0.3337744570320188,
+            0.3299520956072245,
+            0.32060497841873564,
+            0.33467615739504347,
+            0.3779946454514256
+          ],
+          "trial_p90_location_errors": [
+            0.7829082799208031,
+            0.9304737180019422,
+            0.77450429376752,
+            0.8550063444690896,
+            0.900738312608139
+          ]
+        }
+      }
+    }
+  }
+}

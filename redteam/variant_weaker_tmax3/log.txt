@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/variant_weaker_tmax3/ws exited with 0

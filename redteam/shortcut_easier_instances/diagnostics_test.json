@@ -1,0 +1,444 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006017244761196149,
+          "trial_mean_location_errors": [
+            0.19253476130740524,
+            0.1159239738587145,
+            0.15460853722955323,
+            0.15316210035514957,
+            0.1471157281796387
+          ],
+          "trial_median_location_errors": [
+            0.050764561382437984,
+            0.041976402655203394,
+            0.058549626850023934,
+            0.05789431406407233,
+            0.053774320470393544
+          ],
+          "trial_p90_location_errors": [
+            0.1595689070809889,
+            0.10059461863800509,
+            0.12360117382094044,
+            0.14643429459078516,
+            0.14495428177886216
+          ]
+        },
+        "cycle_sync_cycle_only": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_cycle_only/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.015192515766887793,
+          "trial_mean_location_errors": [
+            0.36172214877068604,
+            0.27387919932522925,
+            0.2862467171978176,
+            0.25887394780282225,
+            0.4049902618298466
+          ],
+          "trial_median_location_errors": [
+            0.19553228161119796,
+            0.1709034987733682,
+            0.1506327474534115,
+            0.16207859295283622,
+            0.17870947963893521
+          ],
+          "trial_p90_location_errors": [
+            0.4079761272680158,
+            0.3934809304653355,
+            0.336310884611464,
+            0.45561019052969987,
+            0.6171103067365905
+          ]
+        },
+        "cycle_sync_easy_q": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_easy_q/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_easy_q/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_easy_q/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_easy_q/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_easy_q/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006665252432631905,
+          "trial_mean_location_errors": [
+            0.1309246196968426,
+            0.11805129693715405,
+            0.12063589670437419,
+            0.13658206708158752,
+            0.12500219401075152
+          ],
+          "trial_median_location_errors": [
+            0.1169832563530341,
+            0.1036186087251412,
+            0.10466306447690102,
+            0.12052881013079046,
+            0.10999367660930719
+          ],
+          "trial_p90_location_errors": [
+            0.24671923532656398,
+            0.19380490792426852,
+            0.21806496930902505,
+            0.23833914625657504,
+            0.19205232484897555
+          ]
+        },
+        "cycle_sync_fast": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_fast/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.006452967777236855,
+          "trial_mean_location_errors": [
+            0.2854706642044279,
+            0.22425613168127348,
+            0.26714536128931304,
+            0.20845732035423872,
+            0.24658362252519506
+          ],
+          "trial_median_location_errors": [
+            0.1305513230211604,
+            0.13531271312162257,
+            0.1258146886606442,
+            0.13672555290102678,
+            0.11913075880986815
+          ],
+          "trial_p90_location_errors": [
+            0.3184860076829784,
+            0.22918759599632194,
+            0.24525383094597042,
+            0.2800765842023208,
+            0.25227984184447066
+          ]
+        },
+        "cycle_sync_reverse": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_000.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_001.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_007.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_004.npz",
+            "outputs/cycle_sync_reverse/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.0027114028464600625,
+          "trial_mean_location_errors": [
+            0.30964960664281244,
+            0.2184517170450153,
+            0.2518620867502981,
+            0.1904830786779553,
+            0.2680204279633994
+          ],
+          "trial_median_location_errors": [
+            0.1263497995763959,
+            0.12146582203600036,
+            0.12604031387342313,
+            0.12941595987393617,
+            0.1234358727586595
+          ],
+          "trial_p90_location_errors": [
+            0.31658607072070805,
+            0.23449826603065088,
+            0.24892691278784,
+            0.22717387068361863,
+            0.27030928534550264
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2474.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/adversarial_high_noise/trial_000.npz",
+            "outputs/irls/adversarial_high_noise/trial_001.npz",
+            "outputs/irls/adversarial_high_noise/trial_007.npz",
+            "outputs/irls/adversarial_high_noise/trial_004.npz",
+            "outputs/irls/adversarial_high_noise/trial_003.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.02582927009121501,
+          "trial_mean_location_errors": [
+            0.4451689592521037,
+            0.35254679877620615,
+            0.3132572286479027,
+            0.3036217748788943,
+            0.4988235610956975
+          ],
+          "trial_median_location_errors": [
+            0.20779069338201683,
+            0.19274740195316165,
+            0.20961065139289412,
+            0.21444590042874526,
+            0.26812281359080437
+          ],
+          "trial_p90_location_errors": [
+            1.04271179908175,
+            0.5079672004472314,
+            0.4611416662396255,
+            0.5230219394415885,
+            1.376911589923716
+          ]
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.010081603251640451,
+          "trial_mean_location_errors": [
+            0.1143169102382115,
+            0.14587818486489978,
+            0.10917717177877533,
+            0.13552281222367946,
+            0.12363071212144723
+          ],
+          "trial_median_location_errors": [
+            0.08720846700766136,
+            0.09192054144221645,
+            0.0718029687551836,
+            0.10315413102305192,
+            0.08979279837681356
+          ],
+          "trial_p90_location_errors": [
+            0.20908371521334046,
+            0.2115422852874134,
+            0.17020222629148143,
+            0.2371918159834434,
+            0.2846170460977985
+          ]
+        },
+        "cycle_sync_cycle_only": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_cycle_only/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.01743144131419648,
+          "trial_mean_location_errors": [
+            0.2939153884259968,
+            0.4283021201309169,
+            0.3336696095769164,
+            0.30633556338735607,
+            0.3122032373437342
+          ],
+          "trial_median_location_errors": [
+            0.24014077657348792,
+            0.2786500997489477,
+            0.24115478615838895,
+            0.2420860146220392,
+            0.22649213840279275
+          ],
+          "trial_p90_location_errors": [
+            0.5287197249153531,
+            0.6606778123328608,
+            0.5470944160931759,
+            0.5895785425527346,
+            0.5775401212275596
+          ]
+        },
+        "cycle_sync_easy_q": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_easy_q/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_easy_q/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_easy_q/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_easy_q/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_easy_q/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.014649974503410547,
+          "trial_mean_location_errors": [
+            0.17826370053040713,
+            0.21110647405137134,
+            0.19218894626040772,
+            0.16775617277476995,
+            0.17739617776488664
+          ],
+          "trial_median_location_errors": [
+            0.16308586540778297,
+            0.18760199647501477,
+            0.14442396874004287,
+            0.15982987776249363,
+            0.15175169014721934
+          ],
+          "trial_p90_location_errors": [
+            0.3030640778324126,
+            0.36467843071316175,
+            0.32089558829812403,
+            0.27135865878803606,
+            0.3483767382778803
+          ]
+        },
+        "cycle_sync_fast": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_fast/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.013090415045479153,
+          "trial_mean_location_errors": [
+            0.22962420622032784,
+            0.31524381512156635,
+            0.27649315865040813,
+            0.2360883729977849,
+            0.21476287799919472
+          ],
+          "trial_median_location_errors": [
+            0.19745217779911706,
+            0.22314389224177267,
+            0.20317735549261368,
+            0.2062253657453259,
+            0.1827308972026354
+          ],
+          "trial_p90_location_errors": [
+            0.38586262492864004,
+            0.465600529189451,
+            0.4438409079320344,
+            0.47357353447519474,
+            0.41843658839747677
+          ]
+        },
+        "cycle_sync_reverse": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_008.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_003.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_009.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_007.npz",
+            "outputs/cycle_sync_reverse/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.007135215499923873,
+          "trial_mean_location_errors": [
+            0.20981425008895635,
+            0.28171310011520034,
+            0.25227568107183324,
+            0.21537147723559105,
+            0.2414732303295189
+          ],
+          "trial_median_location_errors": [
+            0.19280202999681942,
+            0.1996224399082564,
+            0.17963099480191158,
+            0.19536618018163987,
+            0.18557331126134546
+          ],
+          "trial_p90_location_errors": [
+            0.32258582759376275,
+            0.37068459488787564,
+            0.34823973553176224,
+            0.3901264295887123,
+            0.37371720686885795
+          ]
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "exact_recovery_rate": 0.0,
+          "mean_num_edges": 2460.0,
+          "num_trials": 5.0,
+          "selected_files": [
+            "outputs/irls/uniform_high_noise/trial_008.npz",
+            "outputs/irls/uniform_high_noise/trial_003.npz",
+            "outputs/irls/uniform_high_noise/trial_009.npz",
+            "outputs/irls/uniform_high_noise/trial_007.npz",
+            "outputs/irls/uniform_high_noise/trial_002.npz"
+          ],
+          "slice": "test",
+          "std_median_location_error": 0.01992999655157044,
+          "trial_mean_location_errors": [
+            0.3929187841701336,
+            0.4751056991671292,
+            0.41026042596271667,
+            0.421787918946262,
+            0.4507962348339658
+          ],
+          "trial_median_location_errors": [
+            0.3337744570320188,
+            0.3299520956072245,
+            0.32060497841873564,
+            0.33467615739504347,
+            0.3779946454514256
+          ],
+          "trial_p90_location_errors": [
+            0.7829082799208031,
+            0.9304737180019422,
+            0.77450429376752,
+            0.8550063444690896,
+            0.900738312608139
+          ]
+        }
+      }
+    }
+  }
+}

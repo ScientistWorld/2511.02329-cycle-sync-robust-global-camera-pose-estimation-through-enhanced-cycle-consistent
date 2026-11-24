@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/variant_better_tmax40/ws exited with 0

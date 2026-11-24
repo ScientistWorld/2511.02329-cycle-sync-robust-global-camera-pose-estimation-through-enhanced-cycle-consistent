@@ -1,0 +1,2 @@
+hidden test for /home/user/redteam/shortcut_degenerate_outputs/ws exited with 0
+scores_test.json is strict JSON: False (contains NaN )

@@ -1,0 +1,2 @@
+hidden test for /home/user/redteam/variant_reference/ws exited with 0
+identical to committed scoring/scores_test.json: True

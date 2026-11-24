@@ -1,0 +1,2 @@
+hidden test exit code: 1
+scores_test.json after the hidden test is the forged file: True

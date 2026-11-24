@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/shortcut_easier_instances/ws exited with 0

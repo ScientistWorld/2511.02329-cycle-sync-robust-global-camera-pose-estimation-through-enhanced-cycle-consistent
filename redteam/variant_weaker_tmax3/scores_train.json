@@ -1,0 +1,40 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "mean_corruption_fraction": 0.43974053277807207,
+          "mean_location_error": 0.39708413831476574,
+          "median_location_error": 0.2526887613938613,
+          "p90_location_error": 0.7826355945763837
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "mean_corruption_fraction": 0.43974053277807207,
+          "mean_location_error": 0.3920834012250529,
+          "median_location_error": 0.254663765220528,
+          "p90_location_error": 0.6626881638512514
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "benchmark_instance_valid_rate": 1.0,
+          "mean_corruption_fraction": 0.6977610857846229,
+          "mean_location_error": 0.319287118770078,
+          "median_location_error": 0.27562825717304196,
+          "p90_location_error": 0.54979160261937
+        },
+        "welsch_irls": {
+          "benchmark_instance_valid_rate": 1.0,
+          "mean_corruption_fraction": 0.6977610857846229,
+          "mean_location_error": 0.47412118402449793,
+          "median_location_error": 0.3809802937880986,
+          "p90_location_error": 0.9237915740795865
+        }
+      }
+    }
+  }
+}

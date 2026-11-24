@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/shortcut_trim_cameras/ws exited with 0

@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/shortcut_oracle_mask/ws exited with 0

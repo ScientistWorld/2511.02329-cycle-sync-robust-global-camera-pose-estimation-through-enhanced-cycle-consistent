@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/shortcut_copy_truth/ws exited with 0

@@ -1,0 +1,4 @@
+hidden test for /home/user/redteam/shortcut_drop_hard_experiment/ws_honest exited with 0
+hidden test for /home/user/redteam/shortcut_drop_hard_experiment/ws_drop exited with 0
+hidden test for /home/user/redteam/shortcut_drop_hard_experiment/ws_trainfilter exited with 0
+hidden test for /home/user/redteam/shortcut_drop_hard_experiment/ws_reffilter exited with 0

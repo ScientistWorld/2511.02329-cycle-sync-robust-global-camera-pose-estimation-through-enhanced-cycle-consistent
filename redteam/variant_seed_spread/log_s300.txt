@@ -1,0 +1,1 @@
+hidden test for /home/user/redteam/variant_seed_spread/ws_s300 exited with 0
