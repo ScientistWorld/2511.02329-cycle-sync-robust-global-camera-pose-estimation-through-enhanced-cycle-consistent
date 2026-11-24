@@ -6,31 +6,43 @@
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 14.2
+          "solver_seconds": 13.3
         },
         "cycle_sync_cycle_only": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 13.0
+          "solver_seconds": 12.1
         },
         "cycle_sync_fast": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 11.1
+          "solver_seconds": 11.8
         },
-        "cycle_sync_reverse": {
+        "cycle_sync_residual_only": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
           "solver_seconds": 12.2
         },
+        "cycle_sync_reverse": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 11.2
+        },
+        "lud": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 5.6
+        },
         "welsch_irls": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 7.6
+          "solver_seconds": 8.1
         }
       }
     },
@@ -40,31 +52,43 @@
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 11.5
+          "solver_seconds": 12.6
         },
         "cycle_sync_cycle_only": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 13.7
+          "solver_seconds": 13.4
         },
         "cycle_sync_fast": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 11.6
+          "solver_seconds": 11.5
+        },
+        "cycle_sync_residual_only": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 11.5
         },
         "cycle_sync_reverse": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 10.5
+          "solver_seconds": 11.0
+        },
+        "lud": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 4.4
         },
         "welsch_irls": {
           "num_failed": 0,
           "num_instances": 40,
           "returncode": 0,
-          "solver_seconds": 6.6
+          "solver_seconds": 7.3
         }
       }
     }

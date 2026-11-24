@@ -6,49 +6,43 @@
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 6.4
+          "solver_seconds": 7.0
+        },
+        "better_refit80": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.9
         },
         "cycle_sync": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 5.8
+          "solver_seconds": 6.5
         },
         "legacy_cycle_sync": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 4.5
+          "solver_seconds": 5.2
         },
         "legacy_welsch_irls": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 3.1
+          "solver_seconds": 3.3
         },
-        "mixed_altwls_stablesoftmin": {
+        "prev_taab_clip": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 4.9
-        },
-        "mixed_exactwls_legacysoftmin": {
-          "num_failed": 0,
-          "num_instances": 20,
-          "returncode": 0,
-          "solver_seconds": 5.8
-        },
-        "refit_half": {
-          "num_failed": 0,
-          "num_instances": 20,
-          "returncode": 0,
-          "solver_seconds": 6.2
+          "solver_seconds": 8.6
         },
         "weaker_tmax3": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 2.9
+          "solver_seconds": 5.5
         }
       }
     },
@@ -58,49 +52,43 @@
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 6.1
+          "solver_seconds": 7.1
+        },
+        "better_refit80": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.8
         },
         "cycle_sync": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 5.9
+          "solver_seconds": 7.0
         },
         "legacy_cycle_sync": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 4.3
+          "solver_seconds": 5.2
         },
         "legacy_welsch_irls": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 2.7
+          "solver_seconds": 3.2
         },
-        "mixed_altwls_stablesoftmin": {
+        "prev_taab_clip": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 4.8
-        },
-        "mixed_exactwls_legacysoftmin": {
-          "num_failed": 0,
-          "num_instances": 20,
-          "returncode": 0,
-          "solver_seconds": 6.7
-        },
-        "refit_half": {
-          "num_failed": 0,
-          "num_instances": 20,
-          "returncode": 0,
-          "solver_seconds": 6.9
+          "solver_seconds": 8.9
         },
         "weaker_tmax3": {
           "num_failed": 0,
           "num_instances": 20,
           "returncode": 0,
-          "solver_seconds": 2.7
+          "solver_seconds": 3.5
         }
       }
     }

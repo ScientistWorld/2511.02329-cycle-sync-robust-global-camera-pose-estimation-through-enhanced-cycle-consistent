@@ -3,58 +3,78 @@
     "adversarial_high_noise": {
       "results": {
         "cycle_sync": {
-          "mean_location_error": 0.1923319563146128,
-          "median_location_error": 0.11659082880264753,
-          "p90_location_error": 0.21827862772296447
+          "mean_location_error": 0.281616971310377,
+          "median_location_error": 0.20409502436966281,
+          "p90_location_error": 0.4075738471400239
         },
         "cycle_sync_cycle_only": {
-          "mean_location_error": 0.24626363365109866,
-          "median_location_error": 0.1435434374488971,
-          "p90_location_error": 0.3117277958746645
+          "mean_location_error": 0.32636661711878545,
+          "median_location_error": 0.2300668390945917,
+          "p90_location_error": 0.5146980727808754
         },
         "cycle_sync_fast": {
-          "mean_location_error": 0.19950665417324706,
-          "median_location_error": 0.12238384189464617,
-          "p90_location_error": 0.23061362319480114
+          "mean_location_error": 0.28664637015556255,
+          "median_location_error": 0.20703449908018445,
+          "p90_location_error": 0.4175487163449329
+        },
+        "cycle_sync_residual_only": {
+          "mean_location_error": 0.33420771549246553,
+          "median_location_error": 0.24957465349329283,
+          "p90_location_error": 0.4928187368532601
         },
         "cycle_sync_reverse": {
-          "mean_location_error": 0.2001980975479794,
-          "median_location_error": 0.11530698171289613,
-          "p90_location_error": 0.22551097491393932
+          "mean_location_error": 0.29392523998991027,
+          "median_location_error": 0.20843998197734076,
+          "p90_location_error": 0.43298659258642624
+        },
+        "lud": {
+          "mean_location_error": 0.7804726096078849,
+          "median_location_error": 0.7040692209998618,
+          "p90_location_error": 1.3058603522571341
         },
         "welsch_irls": {
-          "mean_location_error": 0.21067780933337565,
-          "median_location_error": 0.12704750719648825,
-          "p90_location_error": 0.2435824587787585
+          "mean_location_error": 0.34184867226886195,
+          "median_location_error": 0.26156455282764524,
+          "p90_location_error": 0.5185219370325498
         }
       }
     },
     "uniform_high_noise": {
       "results": {
         "cycle_sync": {
-          "mean_location_error": 0.204318115640302,
-          "median_location_error": 0.17279871646715658,
-          "p90_location_error": 0.3210834341341913
+          "mean_location_error": 0.3481821941028913,
+          "median_location_error": 0.28317762642186756,
+          "p90_location_error": 0.5865603633129561
         },
         "cycle_sync_cycle_only": {
-          "mean_location_error": 0.281111980695547,
-          "median_location_error": 0.21875497039669872,
-          "p90_location_error": 0.4749518950497139
+          "mean_location_error": 0.4360691691880878,
+          "median_location_error": 0.34417434472306696,
+          "p90_location_error": 0.7852380005724041
         },
         "cycle_sync_fast": {
-          "mean_location_error": 0.21754833693569392,
-          "median_location_error": 0.1835616089963646,
-          "p90_location_error": 0.3512875141309343
+          "mean_location_error": 0.36379953600724135,
+          "median_location_error": 0.2968534350917125,
+          "p90_location_error": 0.6201979118827075
+        },
+        "cycle_sync_residual_only": {
+          "mean_location_error": 0.39426038754068765,
+          "median_location_error": 0.3331034077139915,
+          "p90_location_error": 0.6417349070478251
         },
         "cycle_sync_reverse": {
-          "mean_location_error": 0.20069152186151537,
-          "median_location_error": 0.16830356469664984,
-          "p90_location_error": 0.31898716022848334
+          "mean_location_error": 0.3482414801506064,
+          "median_location_error": 0.28659620029889976,
+          "p90_location_error": 0.5757257619963143
+        },
+        "lud": {
+          "mean_location_error": 0.6756422017630132,
+          "median_location_error": 0.6072941503604385,
+          "p90_location_error": 1.1417040929783797
         },
         "welsch_irls": {
-          "mean_location_error": 0.21675276471512267,
-          "median_location_error": 0.18371902823198655,
-          "p90_location_error": 0.3429489396678471
+          "mean_location_error": 0.38626600276749146,
+          "median_location_error": 0.3395166489688676,
+          "p90_location_error": 0.6391527322564475
         }
       }
     }

@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: secondary_claims
-notes: "Exploration (CPU, ~10 min): data model (paper Eq.9-10 vs authors' released generator), T-AAB settings, lambda=0/LUD/LS baselines, headroom variants on public seeds"
+notes: "Final hardening job (CPU): regenerate train + hidden test instances with the authors' corruption models, score reference/ablations/baselines, variants and shortcuts through the evaluators, validate"

@@ -4,29 +4,30 @@ Weighted gain = sum_exp weight x sum_metric |coef| x improvement over the stored
 
 | run | method | uniform median | adversarial median | uniform p90 | adversarial p90 | gain (test) | paired SE | P(gain>0) | wins | gain (train) | failed instances |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| reference | cycle_sync | 0.1728 | 0.1166 | 0.3211 | 0.2183 | +0.0000 | 0.0000 | 0.000 | 0/80 | +0.0000 | 0/0 |
-| reference | cycle_sync_cycle_only | 0.2188 | 0.1435 | 0.4750 | 0.3117 | -0.1368 | 0.0079 | 0.000 | 1/80 | -0.1466 | 0/0 |
-| reference | cycle_sync_fast | 0.1836 | 0.1224 | 0.3513 | 0.2306 | -0.0251 | 0.0019 | 0.000 | 7/80 | -0.0272 | 0/0 |
-| reference | cycle_sync_reverse | 0.1683 | 0.1153 | 0.3190 | 0.2255 | +0.0005 | 0.0039 | 0.577 | 49/80 | +0.0003 | 0/0 |
-| reference | welsch_irls | 0.1837 | 0.1270 | 0.3429 | 0.2436 | -0.0310 | 0.0042 | 0.000 | 11/80 | -0.0168 | 0/0 |
-| variants | better_refit | 0.1611 | 0.1113 | 0.3038 | 0.2100 | +0.0197 | 0.0036 | 1.000 | 62/80 | +0.0208 | 0/0 |
-| variants | cycle_sync | 0.1728 | 0.1166 | 0.3211 | 0.2183 | +0.0000 | 0.0000 | 0.000 | 0/80 | +0.0000 | 0/0 |
-| variants | legacy_cycle_sync | 0.2001 | 0.1320 | 0.4176 | 0.2799 | -0.0841 | 0.0043 | 0.000 | 0/80 | -0.0825 | 0/0 |
-| variants | legacy_welsch_irls | 0.3441 | 0.2401 | 0.8149 | 0.7395 | -0.5371 | 0.0158 | 0.000 | 0/80 | -0.5090 | 0/0 |
-| variants | mixed_altwls_stablesoftmin | 0.2004 | 0.1320 | 0.4175 | 0.2799 | -0.0842 | 0.0044 | 0.000 | 0/80 | -0.0824 | 0/0 |
-| variants | mixed_exactwls_legacysoftmin | 0.1728 | 0.1166 | 0.3214 | 0.2183 | -0.0002 | 0.0002 | 0.173 | 37/80 | -0.0007 | 0/0 |
-| variants | refit_half | 0.1950 | 0.1313 | 0.3833 | 0.2506 | -0.0559 | 0.0041 | 0.000 | 7/80 | -0.0499 | 0/0 |
-| variants | weaker_tmax3 | 0.2266 | 0.2502 | 0.5128 | 0.9027 | -0.4170 | 0.0202 | 0.000 | 0/80 | -0.3774 | 0/0 |
-| shortcuts | cycle_sync | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 40/40 |
-| shortcuts | sc_collapse | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 0/0 |
-| shortcuts | sc_crash_adversarial | 0.1728 | 1.5392 | 0.3211 | 2.5135 | -1.6804 | 0.0131 | 0.000 | 0/80 | n/a | 0/40 |
-| shortcuts | sc_forge_scores | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 0/0 |
-| shortcuts | sc_huge | 1.5259 | 1.5294 | 2.4637 | 2.5002 | -3.2675 | 0.0181 | 0.000 | 0/80 | n/a | 0/0 |
-| shortcuts | sc_nan | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 40/40 |
-| shortcuts | sc_partial | 0.8532 | 0.8183 | 1.3971 | 1.3646 | -1.6347 | 0.1876 | 0.000 | 0/80 | n/a | 20/20 |
-| shortcuts | sc_read_hidden_truth | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 0/0 |
-| shortcuts | sc_trim | 1.5311 | 1.5392 | 2.4720 | 2.5135 | -3.2827 | 0.0186 | 0.000 | 0/80 | n/a | 40/40 |
+| reference | cycle_sync | 0.2832 | 0.2041 | 0.5866 | 0.4076 | +0.0000 | 0.0000 | 0.000 | 0/80 | +0.0000 | 0/0 |
+| reference | cycle_sync_cycle_only | 0.3442 | 0.2301 | 0.7852 | 0.5147 | -0.1618 | 0.0113 | 0.000 | 1/80 | -0.1449 | 0/0 |
+| reference | cycle_sync_fast | 0.2969 | 0.2070 | 0.6202 | 0.4175 | -0.0255 | 0.0034 | 0.000 | 14/80 | -0.0309 | 0/0 |
+| reference | cycle_sync_residual_only | 0.3331 | 0.2496 | 0.6417 | 0.4928 | -0.1096 | 0.0068 | 0.000 | 1/80 | -0.1165 | 0/0 |
+| reference | cycle_sync_reverse | 0.2866 | 0.2084 | 0.5757 | 0.4330 | -0.0107 | 0.0051 | 0.008 | 31/80 | -0.0033 | 0/0 |
+| reference | lud | 0.6073 | 0.7041 | 1.1417 | 1.3059 | -1.0133 | 0.0131 | 0.000 | 0/80 | -1.0526 | 0/0 |
+| reference | welsch_irls | 0.3395 | 0.2616 | 0.6392 | 0.5185 | -0.1256 | 0.0064 | 0.000 | 2/80 | -0.1677 | 0/0 |
+| variants | better_refit | 0.2475 | 0.1536 | 0.5281 | 0.3239 | +0.1023 | 0.0038 | 1.000 | 79/80 | +0.1016 | 0/0 |
+| variants | better_refit80 | 0.2724 | 0.1772 | 0.5852 | 0.3852 | +0.0318 | 0.0036 | 1.000 | 66/80 | +0.0407 | 0/0 |
+| variants | cycle_sync | 0.2832 | 0.2041 | 0.5866 | 0.4076 | +0.0000 | 0.0000 | 0.000 | 0/80 | +0.0000 | 0/0 |
+| variants | legacy_cycle_sync | 0.2900 | 0.2125 | 0.6167 | 0.4357 | -0.0269 | 0.0048 | 0.000 | 18/80 | +0.0107 | 0/0 |
+| variants | legacy_welsch_irls | 0.4351 | 0.3344 | 0.9098 | 0.7770 | -0.4152 | 0.0113 | 0.000 | 0/80 | -0.4575 | 0/0 |
+| variants | prev_taab_clip | 0.2816 | 0.2048 | 0.5781 | 0.4097 | +0.0061 | 0.0038 | 0.943 | 44/80 | +0.0368 | 0/0 |
+| variants | weaker_tmax3 | 0.3410 | 0.2751 | 0.7114 | 0.6900 | -0.2221 | 0.0136 | 0.000 | 2/80 | -0.2627 | 0/0 |
+| shortcuts | cycle_sync | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 40/40 |
+| shortcuts | sc_collapse | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 0/0 |
+| shortcuts | sc_crash_adversarial | 0.2832 | 1.5174 | 0.5866 | 2.4541 | -1.5281 | 0.0119 | 0.000 | 0/80 | n/a | 0/40 |
+| shortcuts | sc_forge_scores | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 0/0 |
+| shortcuts | sc_huge | 1.5102 | 1.5126 | 2.4699 | 2.4366 | -2.9444 | 0.0154 | 0.000 | 0/80 | n/a | 0/0 |
+| shortcuts | sc_nan | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 40/40 |
+| shortcuts | sc_partial | 0.9014 | 0.8596 | 1.5318 | 1.4285 | -1.4789 | 0.1697 | 0.000 | 0/80 | n/a | 20/20 |
+| shortcuts | sc_read_hidden_truth | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 0/0 |
+| shortcuts | sc_trim | 1.5192 | 1.5174 | 2.4832 | 2.4541 | -2.9620 | 0.0154 | 0.000 | 0/80 | n/a | 40/40 |
 
-Instance-sampling std of the reference's weighted error (bootstrap over test instances): 0.0048
+Instance-sampling std of the reference's weighted error (bootstrap over test instances): 0.0080
 Reference rerun inside the variants pass identical to the stored reference: True
 Shortcut log: read_hidden_truth: searched 42 npz files, matched 0/40 instances
