@@ -1,0 +1,108 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "better_refit": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.4
+        },
+        "cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.8
+        },
+        "legacy_cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.5
+        },
+        "legacy_welsch_irls": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 3.1
+        },
+        "mixed_altwls_stablesoftmin": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.9
+        },
+        "mixed_exactwls_legacysoftmin": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.8
+        },
+        "refit_half": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.2
+        },
+        "weaker_tmax3": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 2.9
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "better_refit": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.1
+        },
+        "cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.9
+        },
+        "legacy_cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.3
+        },
+        "legacy_welsch_irls": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 2.7
+        },
+        "mixed_altwls_stablesoftmin": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.8
+        },
+        "mixed_exactwls_legacysoftmin": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.7
+        },
+        "refit_half": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.9
+        },
+        "weaker_tmax3": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 2.7
+        }
+      }
+    }
+  }
+}

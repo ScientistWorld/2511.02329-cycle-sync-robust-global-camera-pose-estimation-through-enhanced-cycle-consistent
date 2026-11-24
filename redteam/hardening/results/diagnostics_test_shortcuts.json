@@ -1,0 +1,120 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "note": "no solver registered",
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": null
+        },
+        "sc_collapse": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.1
+        },
+        "sc_crash_adversarial": {
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": 3,
+          "solver_seconds": 1.0
+        },
+        "sc_forge_scores": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.2
+        },
+        "sc_huge": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.0
+        },
+        "sc_nan": {
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.0
+        },
+        "sc_partial": {
+          "num_failed": 20,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 6.2
+        },
+        "sc_read_hidden_truth": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.0
+        },
+        "sc_trim": {
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.1
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "note": "no solver registered",
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": null
+        },
+        "sc_collapse": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.1
+        },
+        "sc_crash_adversarial": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 10.0
+        },
+        "sc_forge_scores": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 0.8
+        },
+        "sc_huge": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.2
+        },
+        "sc_nan": {
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.0
+        },
+        "sc_partial": {
+          "num_failed": 20,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 5.7
+        },
+        "sc_read_hidden_truth": {
+          "num_failed": 0,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 0.9
+        },
+        "sc_trim": {
+          "num_failed": 40,
+          "num_instances": 40,
+          "returncode": 0,
+          "solver_seconds": 1.0
+        }
+      }
+    }
+  }
+}

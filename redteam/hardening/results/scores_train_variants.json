@@ -1,0 +1,92 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "better_refit": {
+          "mean_location_error": 0.2017183934439751,
+          "median_location_error": 0.11347575761140287,
+          "p90_location_error": 0.2740611154899057
+        },
+        "cycle_sync": {
+          "mean_location_error": 0.20681955075968134,
+          "median_location_error": 0.11943653863900161,
+          "p90_location_error": 0.3045761655246064
+        },
+        "legacy_cycle_sync": {
+          "mean_location_error": 0.2404342096402705,
+          "median_location_error": 0.13565865310313024,
+          "p90_location_error": 0.33544066642394393
+        },
+        "legacy_welsch_irls": {
+          "mean_location_error": 0.3927200792801125,
+          "median_location_error": 0.24262952692052173,
+          "p90_location_error": 0.7555327241870555
+        },
+        "mixed_altwls_stablesoftmin": {
+          "mean_location_error": 0.2404315598040067,
+          "median_location_error": 0.1356586523329929,
+          "p90_location_error": 0.33543613022905494
+        },
+        "mixed_exactwls_legacysoftmin": {
+          "mean_location_error": 0.2068086378261945,
+          "median_location_error": 0.11944327153239358,
+          "p90_location_error": 0.30458416513932496
+        },
+        "refit_half": {
+          "mean_location_error": 0.21908338141389586,
+          "median_location_error": 0.12951169896590414,
+          "p90_location_error": 0.33229883223751094
+        },
+        "weaker_tmax3": {
+          "mean_location_error": 0.4249285996129302,
+          "median_location_error": 0.2600793608607234,
+          "p90_location_error": 0.8842449210514614
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "better_refit": {
+          "mean_location_error": 0.19118550124260072,
+          "median_location_error": 0.1636363932494456,
+          "p90_location_error": 0.30788091126297845
+        },
+        "cycle_sync": {
+          "mean_location_error": 0.19809119244600293,
+          "median_location_error": 0.16666738634053163,
+          "p90_location_error": 0.3236280316856159
+        },
+        "legacy_cycle_sync": {
+          "mean_location_error": 0.24953607504687064,
+          "median_location_error": 0.20084323288523503,
+          "p90_location_error": 0.4271277326913041
+        },
+        "legacy_welsch_irls": {
+          "mean_location_error": 0.42694212592103975,
+          "median_location_error": 0.34233771075629416,
+          "p90_location_error": 0.7948670381647
+        },
+        "mixed_altwls_stablesoftmin": {
+          "mean_location_error": 0.24941964275378212,
+          "median_location_error": 0.20077125667403295,
+          "p90_location_error": 0.42688026453212674
+        },
+        "mixed_exactwls_legacysoftmin": {
+          "mean_location_error": 0.19939847855299692,
+          "median_location_error": 0.16707922548275062,
+          "p90_location_error": 0.32423218730656245
+        },
+        "refit_half": {
+          "mean_location_error": 0.2274192661616064,
+          "median_location_error": 0.18511144402139035,
+          "p90_location_error": 0.38687241440635434
+        },
+        "weaker_tmax3": {
+          "mean_location_error": 0.2748460014396425,
+          "median_location_error": 0.22274941810344226,
+          "p90_location_error": 0.4774836936197688
+        }
+      }
+    }
+  }
+}

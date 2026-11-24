@@ -1,0 +1,72 @@
+{
+  "experiments": {
+    "adversarial_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.2
+        },
+        "cycle_sync_cycle_only": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.9
+        },
+        "cycle_sync_fast": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.5
+        },
+        "cycle_sync_reverse": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.8
+        },
+        "welsch_irls": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.2
+        }
+      }
+    },
+    "uniform_high_noise": {
+      "results": {
+        "cycle_sync": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 7.0
+        },
+        "cycle_sync_cycle_only": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.5
+        },
+        "cycle_sync_fast": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 6.9
+        },
+        "cycle_sync_reverse": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 5.6
+        },
+        "welsch_irls": {
+          "num_failed": 0,
+          "num_instances": 20,
+          "returncode": 0,
+          "solver_seconds": 4.0
+        }
+      }
+    }
+  }
+}
